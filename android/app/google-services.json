@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "516152774492",
+    "project_id": "amsyss",
+    "storage_bucket": "amsyss.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:516152774492:android:4bec450075b52bfe3ebb99",
+        "android_client_info": {
+          "package_name": "com.example.amsystm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNngzC6KqyuP6QDyd7DdTAYm4v_dvaBzY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
