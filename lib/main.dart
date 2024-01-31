@@ -6,11 +6,13 @@ import 'firebase_options.dart';
 
 Future<void> main() async {
   // app will not run until the initialization is complete.
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+
   // Ensure that Firebase is initialized
   final FirebaseApp app = await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   // print('Initialized default app $app');
   runApp(const MyApp());
 }
@@ -45,12 +47,13 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text(widget.title),
-        ),
-        body: Container(
-          color: Theme.of(context).colorScheme.background,
-        ));
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(widget.title),
+      ),
+      body: Container(
+        color: Theme.of(context).colorScheme.background,
+      ),
+    );
   }
 }
