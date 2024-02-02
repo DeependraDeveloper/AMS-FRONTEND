@@ -13,11 +13,15 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
     required this.repository,
   }) : super(const AuthState()) {
     on<SignInEvent>(_onSignInEvent);
+    on<SignUpEvent>(_onSignUpEvent);
     on<SignOutEvent>(_onSignOutEvent);
     on<ResetPasswordEvent>(_onResetPasswordEvent);
   }
 
   final UserRepository repository;
+
+
+  // signIn
   FutureOr<void> _onSignInEvent(
       SignInEvent event, Emitter<AuthState> emit) async {
     emit(state.copyWith(isLoading: true, error: '', message: ''));
@@ -55,12 +59,57 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
     }
   }
 
+  // signUp
+  FutureOr<void> _onSignUpEvent(
+      SignUpEvent event, Emitter<AuthState> emit) async {
+    emit(state.copyWith(isLoading: true, error: '', message: ''));
+
+    try {
+      final response = await repository.signUp(
+        name: event.name,
+        email: event.email,
+        phone: event.phone,
+        password: event.password,
+        department: event.department,
+        designation: event.designation,
+        organization: event.organization,
+      );
+
+      if (response.success) {
+        final data = response.data as User;
+        await HydratedBloc.storage.write('token', data.token);
+
+        emit(state.copyWith(
+          isLoading: false,
+          user: data,
+          message: response.message,
+        ));
+      } else {
+        emit(
+          state.copyWith(
+            isLoading: false,
+            error: 'Error : ${response.message}',
+          ),
+        );
+      }
+    } on Exception catch (_) {
+      emit(
+        state.copyWith(
+          isLoading: false,
+          error: 'Error : $_',
+        ),
+      );
+    }
+  }
+
+  // signOut
   FutureOr<void> _onSignOutEvent(
       SignOutEvent event, Emitter<AuthState> emit) async {
     await HydratedBloc.storage.delete('token');
     emit(const AuthState());
   }
 
+  // resetPassword
   Future<FutureOr<void>> _onResetPasswordEvent(
       ResetPasswordEvent event, Emitter<AuthState> emit) async {
     emit(state.copyWith(isLoading: true, error: '', message: ''));
@@ -69,7 +118,7 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
       final response = await repository.resetPasswrod(
         phone: event.phone,
         password: event.password,
-        confirmPassword : event.confirmPassword,
+        confirmPassword: event.confirmPassword,
       );
 
       if (response.success) {

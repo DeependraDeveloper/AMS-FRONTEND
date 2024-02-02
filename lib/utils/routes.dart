@@ -4,6 +4,8 @@ import 'package:amsystm/observer.dart';
 import 'package:amsystm/views/home/home.dart';
 import 'package:amsystm/views/reset_password/reset_password.dart';
 import 'package:amsystm/views/signIn/sign_in.dart';
+import 'package:amsystm/views/signUp/register_one.dart';
+import 'package:amsystm/views/signUp/register_two.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
@@ -24,6 +26,20 @@ class AppRouter {
                   path: 'reset_password',
                   name: 'reset_password',
                   builder: (context, state) => const ResetPasswordPage(),
+                ),
+                GoRoute(
+                  path: 'sign_up',
+                  name: 'sign_up',
+                  builder: (context, state) => const RegisterOne(),
+                  routes: [
+                    GoRoute(
+                      path: 'register',
+                      name: 'register',
+                      builder: (context, state) => RegisterTwo(
+                        details: state.extra as Map<String, dynamic>,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

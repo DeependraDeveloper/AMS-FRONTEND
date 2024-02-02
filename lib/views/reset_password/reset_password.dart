@@ -2,7 +2,6 @@ import 'package:amsystm/bloc/auth/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class ResetPasswordPage extends StatefulWidget {
   const ResetPasswordPage({super.key});
@@ -25,7 +24,6 @@ class _RegistrationPageState extends State<ResetPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("ResetPasswordPage");
     return Scaffold(
       body: GestureDetector(
         onTap: () {
@@ -83,7 +81,7 @@ class _RegistrationPageState extends State<ResetPasswordPage> {
               height: MediaQuery.of(context).size.height,
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/login.jpg'),
+                  image: AssetImage('assets/images/reset_password.jpg'),
                   fit: BoxFit.cover,
                 ),
               ),

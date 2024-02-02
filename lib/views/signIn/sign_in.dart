@@ -22,7 +22,6 @@ class _RegistrationPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("SignInPage");
     return Scaffold(
       body: GestureDetector(
         onTap: () {
@@ -274,8 +273,8 @@ class _RegistrationPageState extends State<SignInPage> {
                                   }
                                 }
                               },
-                              child: Text(
-                                'LOGIN',
+                              child: const Text(
+                                'SIGN IN',
                                 style: TextStyle(
                                   letterSpacing: 1.5,
                                   color: Colors.white,
@@ -290,6 +289,42 @@ class _RegistrationPageState extends State<SignInPage> {
                       height: 20,
                     ),
 
+                    Container(
+                      width: double.infinity,
+                      height: 50,
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          colors: [
+                            Color.fromARGB(255, 3, 116, 244),
+                            Color.fromARGB(255, 3, 67, 119),
+                          ],
+                        ),
+                      ),
+                      child: TextButton(
+                        onPressed: () {
+                          context.pushNamed('sign_up');
+                        },
+                        child: const Text(
+                          'SIGN UP',
+                          style: TextStyle(
+                            letterSpacing: 1.5,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    // SizedBox for spacing
+                    const SizedBox(
+                      height: 20,
+                    ),
+
                     // Text for forgot password
                     GestureDetector(
                       onTap: () {
@@ -299,7 +334,7 @@ class _RegistrationPageState extends State<SignInPage> {
                         'Forgot Password?',
                         style: TextStyle(
                           decoration: TextDecoration.underline,
-                          color: Color.fromARGB(255, 31, 66, 141),
+                          color: Colors.red,
                           fontWeight: FontWeight.w400,
                           fontSize: 18,
                         ),

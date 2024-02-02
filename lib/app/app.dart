@@ -1,5 +1,6 @@
 import 'package:amsystm/bloc/auth/auth_bloc.dart';
 import 'package:amsystm/bloc/connectivity/connectivity_bloc.dart';
+import 'package:amsystm/bloc/user/user_bloc.dart';
 import 'package:amsystm/data/repositories/user.dart';
 import 'package:amsystm/data/services/user.dart';
 import 'package:amsystm/navigation_observer.dart';
@@ -18,7 +19,6 @@ class Application extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
-          lazy: false,
           create: (context) => AuthBloc(
             repository: UserRepositoryImpl(
               userService: UserService(
@@ -30,11 +30,24 @@ class Application extends StatelessWidget {
         BlocProvider<ConnectivityBloc>(
           create: (context) =>
               ConnectivityBloc(connectivity: Connectivity(), dio: Dio()),
-        )
+        ),
+        BlocProvider<UserBloc>(
+          lazy: false,
+          create: (context) => UserBloc(
+            repository: UserRepositoryImpl(
+              userService: UserService(
+                dio: Dio(),
+              ),
+            ),
+          )..add(
+              GetAttendanceEvent(
+                id: context.read<AuthBloc>().state.user.id ?? '',
+              ),
+            ),
+        ),
       ],
       child: BlocBuilder<AuthBloc, AuthState>(
         buildWhen: (previous, current) {
-          
           return previous.user != current.user ||
               previous.user.id != current.user.id ||
               previous.user.token != current.user.token;

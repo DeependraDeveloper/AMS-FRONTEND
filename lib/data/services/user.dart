@@ -1,5 +1,4 @@
-import 'dart:math';
-
+import 'package:amsystm/data/models/attendence.dart';
 import 'package:amsystm/data/models/json_reposne.dart';
 import 'package:amsystm/data/models/user.dart';
 import 'package:amsystm/utils/constants.dart';
@@ -35,7 +34,6 @@ class UserService {
         },
       );
 
-
       if (response.statusCode == 200) {
         final data = User.fromJson(response.data ?? <String, dynamic>{});
 
@@ -63,6 +61,57 @@ class UserService {
     }
   }
 
+  // signUp
+  Future<JsonResponse> signUp({
+    required String name,
+    required String email,
+    required int phone,
+    required String password,
+    required String department,
+    required String designation,
+    required String organization,
+  }) async {
+    try {
+      final Response response = await dio.post(
+        '/signup',
+        data: {
+          'name': name,
+          'email': email,
+          'phone': phone,
+          'password': password,
+          'department': department,
+          'designation': designation,
+          'organization': organization,
+        },
+      );
+      if (response.statusCode == 200) {
+        final data = User.fromJson(response.data ?? <String, dynamic>{});
+
+        return JsonResponse.success(
+          message: 'Signed Up Successfully!',
+          data: data,
+        );
+      } else {
+        final error = response.data?["message"]?.toString();
+        return JsonResponse.failure(
+          statusCode: response.statusCode ?? 500,
+          message: error ?? 'Something went wrong!',
+        );
+      }
+    } on DioException catch (e) {
+      final error = e.response?.data?["message"]?.toString();
+      return JsonResponse.failure(
+        message: error.toString(),
+        statusCode: e.response?.statusCode ?? 500,
+      );
+    } on Exception catch (_) {
+      return JsonResponse.failure(
+        message: 'Something went wrong!',
+      );
+    }
+  }
+
+  // resetPasswrod
   Future<JsonResponse> resetPasswrod({
     required int phone,
     required String password,
@@ -82,6 +131,81 @@ class UserService {
 
         return JsonResponse.success(
           message: 'Password Reset Successfully!',
+          data: data,
+        );
+      } else {
+        final error = response.data?["message"]?.toString();
+        return JsonResponse.failure(
+          statusCode: response.statusCode ?? 500,
+          message: error ?? 'Something went wrong!',
+        );
+      }
+    } on DioException catch (e) {
+      final error = e.response?.data?["message"]?.toString();
+      return JsonResponse.failure(
+        message: error.toString(),
+        statusCode: e.response?.statusCode ?? 500,
+      );
+    } on Exception catch (_) {
+      return JsonResponse.failure(
+        message: 'Something went wrong!',
+      );
+    }
+  }
+
+  // clockInOut
+  Future<JsonResponse> clockInOut({
+    required String id,
+    required String time,
+  }) async {
+    try {
+      final Response response = await dio.post(
+        '/clock-in-out',
+        data: {
+          'id': id,
+          'time': time,
+        },
+      );
+      if (response.statusCode == 200) {
+        return JsonResponse.success(
+          message: response.data?["message"]?.toString() ?? 'Success!',
+        );
+      } else {
+        final error = response.data?["message"]?.toString();
+        return JsonResponse.failure(
+          statusCode: response.statusCode ?? 500,
+          message: error ?? 'Something went wrong!',
+        );
+      }
+    } on DioException catch (e) {
+      final error = e.response?.data?["message"]?.toString();
+      return JsonResponse.failure(
+        message: error.toString(),
+        statusCode: e.response?.statusCode ?? 500,
+      );
+    } on Exception catch (_) {
+      return JsonResponse.failure(
+        message: 'Something went wrong!',
+      );
+    }
+  }
+
+  // getAttendence
+  Future<JsonResponse> getAttendence({
+    required String id,
+  }) async {
+    try {
+      final Response response = await dio.get(
+        '/attendence',
+        queryParameters: {
+          'id': id,
+        },
+      );
+      if (response.statusCode == 200) {
+        final data = Attendence.fromJson(response.data ?? <String, dynamic>{});
+
+        return JsonResponse.success(
+          message: 'Attendence Fetched Successfully!',
           data: data,
         );
       } else {
