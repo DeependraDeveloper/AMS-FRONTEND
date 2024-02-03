@@ -1,81 +1,80 @@
 import 'package:amsystm/bloc/auth/auth_bloc.dart';
+import 'package:amsystm/views/attendence/attendence.dart';
 import 'package:amsystm/views/home/clock.dart';
+import 'package:amsystm/views/leave/leave.dart';
+import 'package:amsystm/views/profile/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int currIdx = 0;
+
+  List<Widget> pages = const <Widget>[
+    AttedencePage(),
+    LeavePage(),
+    ProfilePage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     final String name = context.read<AuthBloc>().state.user.name ?? '';
     return Scaffold(
-        backgroundColor: Colors.blue,
-        appBar: AppBar(
-          backgroundColor: Colors.black,
-          title: Text(
-            'Hi $name!',
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
-              color: Colors.white,
-              letterSpacing: 1.5,
-            ),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: Text(
+          'Hi $name!',
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+            color: Colors.white,
+            letterSpacing: 1.5,
           ),
-          actions: [
-            const Clock(),
-            const SizedBox(
-              width: 20,
-            ),
-            // logout button
-            IconButton(
-              onPressed: () {
-                context.read<AuthBloc>().add(
-                      const SignOutEvent(),
-                    );
-              },
-              icon: const Icon(
-                Icons.logout,
-                color: Colors.white,
-                size: 30,
-              ),
-            ),
-          ],
         ),
-        body: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
+        actions: const [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15),
+            child: Clock(),
           ),
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: const Column(
-            children: [
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                'Welcome to the Home Page',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                  letterSpacing: 1.5,
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                'You are now logged in!',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                  letterSpacing: 1.5,
-                ),
-              ),
-            ],
+        ],
+      ),
+      body: pages[currIdx],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currIdx,
+        onTap: (value) {
+          setState(() {
+            currIdx = value;
+          });
+        },
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.black,
+        unselectedItemColor: Colors.white,
+        selectedItemColor: Colors.blue,
+        iconSize: 30,
+        showSelectedLabels: true,
+        showUnselectedLabels: false,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.hourglass_empty_outlined),
+            label: 'Attendance',
           ),
-        ));
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add_business_outlined),
+            label: 'Leave',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+      ),
+    );
   }
 }

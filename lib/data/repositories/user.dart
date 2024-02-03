@@ -38,6 +38,22 @@ abstract class UserRepository {
   }); 
 
 
+  // addLeaveRequest
+  Future<JsonResponse> addLeaveRequest({
+    required String leaveType,
+    required String leaveReason,
+    required String leaveFrom,
+    required String leaveTo,
+    required String id,
+  });
+
+  // getLeaves
+
+  Future<JsonResponse> getLeaveRequests({
+    required String id,
+  });
+
+
 }
 
 class UserRepositoryImpl implements UserRepository {
@@ -112,6 +128,35 @@ class UserRepositoryImpl implements UserRepository {
     required String id,
   }) {
     return userService.getAttendence(
+      id: id,
+    );
+  }
+
+  // addLeaveRequest
+  @override
+  Future<JsonResponse> addLeaveRequest({
+    required String leaveType,
+    required String leaveReason,
+    required String leaveFrom,
+    required String leaveTo,
+    required String id,
+  }) {
+    return userService.addLeaveRequest(
+      leaveType: leaveType,
+      leaveReason: leaveReason,
+      leaveFrom: leaveFrom,
+      leaveTo: leaveTo,
+      id: id,
+    );
+  }
+
+
+  // getLeaves
+  @override
+  Future<JsonResponse> getLeaveRequests({
+    required String id,
+  }) {
+    return userService.getLeaveRequests(
       id: id,
     );
   }

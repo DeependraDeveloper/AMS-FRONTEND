@@ -39,8 +39,14 @@ class Application extends StatelessWidget {
                 dio: Dio(),
               ),
             ),
-          )..add(
+          )
+            ..add(
               GetAttendanceEvent(
+                id: context.read<AuthBloc>().state.user.id ?? '',
+              ),
+            )
+            ..add(
+              GetLeavesEvent(
                 id: context.read<AuthBloc>().state.user.id ?? '',
               ),
             ),

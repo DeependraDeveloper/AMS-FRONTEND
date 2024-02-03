@@ -2,6 +2,7 @@ import 'package:amsystm/bloc/auth/auth_bloc.dart';
 import 'package:amsystm/navigation_observer.dart';
 import 'package:amsystm/observer.dart';
 import 'package:amsystm/views/home/home.dart';
+import 'package:amsystm/views/leave/add_leave.dart';
 import 'package:amsystm/views/reset_password/reset_password.dart';
 import 'package:amsystm/views/signIn/sign_in.dart';
 import 'package:amsystm/views/signUp/register_one.dart';
@@ -48,13 +49,11 @@ class AppRouter {
               name: 'home',
               builder: (context, state) => const HomePage(),
               routes: [
-                // GoRoute(
-                //   path: 'detail',
-                //   name: 'detail',
-                //   builder: (context, state) => const PostDetail(
-                //       // post: state.extra as Post,
-                //       ),
-                // ),
+                GoRoute(
+                  path: 'add-leave',
+                  name: 'add-leave',
+                  builder: (context, state) => const AddLeavePage(),
+                ),
                 // GoRoute(
                 //   path: 'chat',
                 //   name: 'chat',

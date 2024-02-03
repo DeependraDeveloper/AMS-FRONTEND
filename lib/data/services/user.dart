@@ -1,5 +1,6 @@
 import 'package:amsystm/data/models/attendence.dart';
 import 'package:amsystm/data/models/json_reposne.dart';
+import 'package:amsystm/data/models/leave.dart';
 import 'package:amsystm/data/models/user.dart';
 import 'package:amsystm/utils/constants.dart';
 import 'package:dio/dio.dart';
@@ -196,16 +197,94 @@ class UserService {
   }) async {
     try {
       final Response response = await dio.get(
-        '/attendence',
-        queryParameters: {
-          'id': id,
-        },
+        '/attendence/$id',
       );
+
       if (response.statusCode == 200) {
         final data = Attendence.fromJson(response.data ?? <String, dynamic>{});
 
         return JsonResponse.success(
           message: 'Attendence Fetched Successfully!',
+          data: data,
+        );
+      } else {
+        final error = response.data?["message"]?.toString();
+        return JsonResponse.failure(
+          statusCode: response.statusCode ?? 500,
+          message: error ?? 'Something went wrong!',
+        );
+      }
+    } on DioException catch (e) {
+      final error = e.response?.data?["message"]?.toString();
+      return JsonResponse.failure(
+        message: error.toString(),
+        statusCode: e.response?.statusCode ?? 500,
+      );
+    } on Exception catch (_) {
+      return JsonResponse.failure(
+        message: 'Something went wrong!',
+      );
+    }
+  }
+
+  // addLeaveRequest
+
+  Future<JsonResponse> addLeaveRequest({
+    required String leaveType,
+    required String leaveReason,
+    required String leaveFrom,
+    required String leaveTo,
+    required String id,
+  }) async {
+    try {
+      final Response response = await dio.post(
+        '/leave-request',
+        data: {
+          'leaveType': leaveType,
+          'leaveReason': leaveReason,
+          'leaveFrom': leaveFrom,
+          'leaveTo': leaveTo,
+          'id': id,
+        },
+      );
+      if (response.statusCode == 200) {
+        return JsonResponse.success(
+          message: response.data?["message"]?.toString() ?? 'Success!',
+        );
+      } else {
+        final error = response.data?["message"]?.toString();
+        return JsonResponse.failure(
+          statusCode: response.statusCode ?? 500,
+          message: error ?? 'Something went wrong!',
+        );
+      }
+    } on DioException catch (e) {
+      final error = e.response?.data?["message"]?.toString();
+      return JsonResponse.failure(
+        message: error.toString(),
+        statusCode: e.response?.statusCode ?? 500,
+      );
+    } on Exception catch (_) {
+      return JsonResponse.failure(
+        message: 'Something went wrong!',
+      );
+    }
+  }
+
+  // getLeaves
+
+  Future<JsonResponse> getLeaveRequests({
+    required String id,
+  }) async {
+    try {
+      final Response response = await dio.get(
+        '/leave-request/$id',
+      );
+      if (response.statusCode == 200) {
+        final data =
+            List.from(response.data).map((e) => Leave.fromJson(e)).toList();
+        return JsonResponse.success(
+          message: 'Leaves Fetched Successfully!',
           data: data,
         );
       } else {
