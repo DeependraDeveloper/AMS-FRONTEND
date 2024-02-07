@@ -2,7 +2,7 @@ import 'package:amsystm/bloc/auth/auth_bloc.dart';
 import 'package:amsystm/navigation_observer.dart';
 import 'package:amsystm/observer.dart';
 import 'package:amsystm/views/attendence/add_employee.dart';
-import 'package:amsystm/views/home/home.dart';
+import 'package:amsystm/views/home/main_page.dart';
 import 'package:amsystm/views/leave/add_leave.dart';
 import 'package:amsystm/views/reset_password/reset_password.dart';
 import 'package:amsystm/views/sign_in/sign_in.dart';
@@ -48,7 +48,7 @@ class AppRouter {
             GoRoute(
               path: '/',
               name: 'home',
-              builder: (context, state) => const HomePage(),
+              builder: (context, state) => const MainPage(),
               routes: [
                 GoRoute(
                   path: 'add-leave',

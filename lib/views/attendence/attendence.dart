@@ -12,6 +12,9 @@ class AttedencePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final String role = context.read<AuthBloc>().state.user.role ?? '';
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Attendences'),
+      ),
       floatingActionButton: role == 'employee'
           ? null
           : FloatingActionButton(
@@ -32,14 +35,9 @@ class AttedencePage extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        color: Colors.black,
+        color: Colors.white,
         child: Column(
           children: [
-            SvgPicture.asset(
-              'assets/svgs/welcom.svg',
-              width: 200,
-              height: 200,
-            ),
             role == 'employee'
                 ? BlocConsumer<UserBloc, UserState>(
                     listener: (context, state) {

@@ -29,12 +29,11 @@ class _AddEmployeeState extends State<AddEmployee> {
       appBar: AppBar(
         elevation: 0,
         iconTheme: const IconThemeData(
-          color: Colors.white,
+          color: Colors.black,
         ),
-        backgroundColor: Colors.blue,
         title: const Text(
           'Add Employee',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.black),
         ),
       ),
       body: GestureDetector(
@@ -73,14 +72,9 @@ class _AddEmployeeState extends State<AddEmployee> {
           builder: (context, state) {
             return Container(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              width: double.infinity,
+              width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/3.png'),
-                  fit: BoxFit.cover,
-                ),
-              ),
+              color: Colors.white,
               child: Form(
                 key: _formKey,
                 child: SingleChildScrollView(

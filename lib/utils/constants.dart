@@ -1,5 +1,5 @@
 const httpSchema = 'http';
-const httpHost = '192.168.1.138';
+const httpHost = '192.168.136.87';
 const httpPort = 5000;
 const apiVersion = 'api/v1';
 const user = 'user';

@@ -24,13 +24,14 @@ class _AddLeavePageState extends State<AddLeavePage> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
-          color: Colors.white,
+          color: Colors.black,
         ),
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.white,
         title: const Text(
-          'Leave Request',
+          'Add Leave Request',
           style: TextStyle(
-            color: Colors.white,
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
@@ -73,23 +74,13 @@ class _AddLeavePageState extends State<AddLeavePage> {
         }, builder: (context, state) {
           return Container(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            width: double.infinity,
+            width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Color.fromARGB(255, 8, 121, 214),
-                  Color.fromARGB(255, 8, 121, 214),
-                  Colors.black,
-                ],
-              ),
-            ),
+            color: Colors.white,
             child: Form(
               key: _formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   // DropdownButtonFormField for leave type
                   DropdownButtonFormField(

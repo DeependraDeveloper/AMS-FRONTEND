@@ -14,6 +14,13 @@ class LeavePage extends StatelessWidget {
     final String role = user.role ?? '';
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Leaves Requests',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        iconTheme: const IconThemeData(color: Colors.black),
+      ),
       floatingActionButton: role == 'company'
           ? null
           : FloatingActionButton(
@@ -24,115 +31,123 @@ class LeavePage extends StatelessWidget {
               onPressed: () {
                 context.pushNamed('add-leave');
               },
-              child: const Icon(Icons.add),
+              child: const Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
             ),
-      body: BlocConsumer<UserBloc, UserState>(
-        listener: (context, state) {
-          if (state.error.isNotEmpty) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.error),
-                backgroundColor: Colors.red,
-              ),
-            );
-          } else if (state.message.isNotEmpty) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: Colors.green,
-              ),
-            );
-          }
-        },
-        builder: (BuildContext context, state) {
-          return Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            color: Colors.black,
-            child: state.leaves.isEmpty
-                ? Center(
-                    child: Text(
-                      role == 'employee' ? 'No Leaves' : 'No Leave Requests',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+      body: SafeArea(
+        child: BlocConsumer<UserBloc, UserState>(
+          listener: (context, state) {
+            if (state.error.isNotEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.error),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            } else if (state.message.isNotEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.message),
+                  backgroundColor: Colors.green,
+                ),
+              );
+            }
+          },
+          builder: (BuildContext context, state) {
+            return Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              color: Colors.white,
+              child: state.leaves.isEmpty
+                  ? Center(
+                      child: Text(
+                        role == 'employee'
+                            ? 'No Leaves Requests added yet!'
+                            : 'No Leave Requests Found yet!',
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
+                    )
+                  : ListView.builder(
+                      itemCount: state.leaves.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final leave = state.leaves[index];
+                        return Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 120,
+                          margin: const EdgeInsets.only(bottom: 10),
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: Colors.grey)),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                leave.leaveType ?? '',
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    leave.leaveFrom ?? '',
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    leave.leaveTo ?? '',
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    leave.leaveStatus ?? '',
+                                    style: TextStyle(
+                                      color: leave.leaveStatus == 'Approved'
+                                          ? Colors.green
+                                          : leave.leaveStatus == 'Rejected'
+                                              ? Colors.red
+                                              : Colors.blue,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                leave.leaveReason ?? '',
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                     ),
-                  )
-                : ListView.builder(
-                    itemCount: state.leaves.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final leave = state.leaves[index];
-                      return Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 120,
-                        margin: const EdgeInsets.only(bottom: 10),
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: const Color.fromARGB(68, 121, 85, 72),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              leave.leaveType ?? '',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  leave.leaveFrom ?? '',
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  leave.leaveTo ?? '',
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  leave.leaveStatus ?? '',
-                                  style: TextStyle(
-                                    color: leave.leaveStatus == 'Approved'
-                                        ? Colors.green
-                                        : leave.leaveStatus == 'Rejected'
-                                            ? Colors.red
-                                            : Colors.blue,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Text(
-                              leave.leaveReason ?? '',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
