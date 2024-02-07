@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:amsystm/data/models/attendence.dart';
 import 'package:amsystm/data/models/leave.dart';
+import 'package:amsystm/data/models/user.dart';
 import 'package:amsystm/data/repositories/user.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +18,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<GetAttendanceEvent>(_onGetAttendanceEvent);
     on<AddLeaveRequestEvent>(_onAddLeaveRequestEvent);
     on<GetLeavesEvent>(_onGetLeavesEvent);
+    on<AddEmployeeEvent>(_onAddEmployeeEvent);
+    on<GetAllAttendencesEvent>(_onGetAllAttendanceEvent);
+    on<GetAllEmployeesEvent>(_onGetAllEmployeesEvent);
   }
 
   final UserRepository repository;
@@ -140,6 +144,106 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           message: response.message,
           leaves: data,
         ));
+      } else {
+        emit(
+          state.copyWith(
+            isLoading: false,
+            error: 'Error : ${response.message}',
+          ),
+        );
+      }
+    } on Exception catch (_) {
+      emit(
+        state.copyWith(
+          isLoading: false,
+          error: 'Error : $_',
+        ),
+      );
+    }
+  }
+
+  Future<FutureOr<void>> _onAddEmployeeEvent(
+      AddEmployeeEvent event, Emitter<UserState> emit) async {
+    emit(state.copyWith(isLoading: true, error: '', message: ''));
+    try {
+      final response = await repository.addEmployee(
+        id: event.id,
+        name: event.name,
+        email: event.email,
+        phone: event.phone,
+        password: event.password,
+        department: event.department,
+        designation: event.designation,
+      );
+
+      if (response.success) {
+        emit(state.copyWith(
+          isLoading: false,
+          message: response.message,
+        ));
+      } else {
+        emit(
+          state.copyWith(
+            isLoading: false,
+            error: 'Error : ${response.message}',
+          ),
+        );
+      }
+    } on Exception catch (_) {
+      emit(
+        state.copyWith(
+          isLoading: false,
+          error: 'Error : $_',
+        ),
+      );
+    }
+  }
+
+  Future<FutureOr<void>> _onGetAllAttendanceEvent(
+      GetAllAttendencesEvent event, Emitter<UserState> emit) async {
+    emit(state.copyWith(isLoading: true, error: '', message: ''));
+    try {
+      final response = await repository.getAllAttendences(
+        id: event.id,
+      );
+
+      if (response.success) {
+        final data = response.data as List<Attendence>;
+        emit(state.copyWith(
+          isLoading: false,
+          message: response.message,
+          attendences: data,
+        ));
+      } else {
+        emit(
+          state.copyWith(
+            isLoading: false,
+            error: 'Error : ${response.message}',
+          ),
+        );
+      }
+    } on Exception catch (_) {
+      emit(
+        state.copyWith(
+          isLoading: false,
+          error: 'Error : $_',
+        ),
+      );
+    }
+  }
+
+  Future<FutureOr<void>> _onGetAllEmployeesEvent(
+      GetAllEmployeesEvent event, Emitter<UserState> emit) async {
+    emit(state.copyWith(isLoading: true, error: '', message: ''));
+    try {
+      final response = await repository.getAllUsers(
+        organization: event.organization,
+      );
+
+      if (response.success) {
+        final data = response.data as List<User>;
+        emit(state.copyWith(
+            isLoading: false, message: response.message, users: data));
       } else {
         emit(
           state.copyWith(

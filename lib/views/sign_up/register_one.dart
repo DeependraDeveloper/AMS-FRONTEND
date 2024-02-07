@@ -1,4 +1,3 @@
-import 'package:amsystm/views/signUp/register_two.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -39,7 +38,7 @@ class _RegisterOneState extends State<RegisterOne> {
           height: MediaQuery.of(context).size.height,
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/images/reset_password.jpg'),
+              image: AssetImage('assets/images/3.png'),
               fit: BoxFit.cover,
             ),
           ),

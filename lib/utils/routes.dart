@@ -1,12 +1,13 @@
 import 'package:amsystm/bloc/auth/auth_bloc.dart';
 import 'package:amsystm/navigation_observer.dart';
 import 'package:amsystm/observer.dart';
+import 'package:amsystm/views/attendence/add_employee.dart';
 import 'package:amsystm/views/home/home.dart';
 import 'package:amsystm/views/leave/add_leave.dart';
 import 'package:amsystm/views/reset_password/reset_password.dart';
-import 'package:amsystm/views/signIn/sign_in.dart';
-import 'package:amsystm/views/signUp/register_one.dart';
-import 'package:amsystm/views/signUp/register_two.dart';
+import 'package:amsystm/views/sign_in/sign_in.dart';
+import 'package:amsystm/views/sign_up/register_one.dart';
+import 'package:amsystm/views/sign_up/register_two.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
@@ -54,13 +55,11 @@ class AppRouter {
                   name: 'add-leave',
                   builder: (context, state) => const AddLeavePage(),
                 ),
-                // GoRoute(
-                //   path: 'chat',
-                //   name: 'chat',
-                //   builder: (context, state) => ChatScreen(
-                //     chat: state.extra as Chat,
-                //   ),
-                // ),
+                GoRoute(
+                  path: 'add-employee',
+                  name: 'add-employee',
+                  builder: (context, state) => const AddEmployee(),
+                ),
                 // GoRoute(
                 //   path: 'message',
                 //   name: 'message',

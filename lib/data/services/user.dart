@@ -16,7 +16,10 @@ class UserService {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
     };
-    dio.interceptors.add(LogInterceptor());
+    dio.interceptors.add(LogInterceptor(
+      requestBody: true,
+      responseBody: true,
+    ));
   }
 
   final Dio dio;
@@ -285,6 +288,125 @@ class UserService {
             List.from(response.data).map((e) => Leave.fromJson(e)).toList();
         return JsonResponse.success(
           message: 'Leaves Fetched Successfully!',
+          data: data,
+        );
+      } else {
+        final error = response.data?["message"]?.toString();
+        return JsonResponse.failure(
+          statusCode: response.statusCode ?? 500,
+          message: error ?? 'Something went wrong!',
+        );
+      }
+    } on DioException catch (e) {
+      final error = e.response?.data?["message"]?.toString();
+      return JsonResponse.failure(
+        message: error.toString(),
+        statusCode: e.response?.statusCode ?? 500,
+      );
+    } on Exception catch (_) {
+      return JsonResponse.failure(
+        message: 'Something went wrong!',
+      );
+    }
+  }
+
+  // addEmployee
+  Future<JsonResponse> addEmployee({
+    required String id,
+    required String name,
+    required String email,
+    required String phone,
+    required String password,
+    required String department,
+    required String designation,
+  }) async {
+    try {
+      final Response response = await dio.post(
+        '/add-employee',
+        data: {
+          'id': id,
+          'name': name,
+          'email': email,
+          'phone': phone,
+          'password': password,
+          'department': department,
+          'designation': designation,
+        },
+      );
+      if (response.statusCode == 200) {
+        return JsonResponse.success(
+          message: response.data?["message"]?.toString() ?? 'Success!',
+        );
+      } else {
+        final error = response.data?["message"]?.toString();
+        return JsonResponse.failure(
+          statusCode: response.statusCode ?? 500,
+          message: error ?? 'Something went wrong!',
+        );
+      }
+    } on DioException catch (e) {
+      final error = e.response?.data?["message"]?.toString();
+      return JsonResponse.failure(
+        message: error.toString(),
+        statusCode: e.response?.statusCode ?? 500,
+      );
+    } on Exception catch (_) {
+      return JsonResponse.failure(
+        message: 'Something went wrong!',
+      );
+    }
+  }
+
+  // getAllAttendences
+  Future<JsonResponse> getAllAttendences({
+    required String id,
+  }) async {
+    try {
+      final Response response = await dio.get(
+        '/attendences/$id',
+      );
+      if (response.statusCode == 200) {
+        final data = List.from(response.data)
+            .map((e) => Attendence.fromJson(e))
+            .toList();
+        return JsonResponse.success(
+          message: 'Attendences Fetched Successfully!',
+          data: data,
+        );
+      } else {
+        final error = response.data?["message"]?.toString();
+        return JsonResponse.failure(
+          statusCode: response.statusCode ?? 500,
+          message: error ?? 'Something went wrong!',
+        );
+      }
+    } on DioException catch (e) {
+      final error = e.response?.data?["message"]?.toString();
+      return JsonResponse.failure(
+        message: error.toString(),
+        statusCode: e.response?.statusCode ?? 500,
+      );
+    } on Exception catch (_) {
+      return JsonResponse.failure(
+        message: 'Something went wrong!',
+      );
+    }
+  }
+
+  // getAllUsers
+
+  Future<JsonResponse> getAllUsers({
+    required String organization,
+  }) async {
+    try {
+      final Response response = await dio.get(
+        '/users/$organization',
+      );
+      if (response.statusCode == 200) {
+        final data =
+            List.from(response.data).map((e) => User.fromJson(e)).toList();
+        return JsonResponse.success(
+          message: 'Users Fetched Successfully!',
           data: data,
         );
       } else {

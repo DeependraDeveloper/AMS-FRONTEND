@@ -1,4 +1,5 @@
 import 'package:amsystm/bloc/auth/auth_bloc.dart';
+import 'package:amsystm/bloc/user/user_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,21 +46,25 @@ class _RegistrationPageState extends State<SignInPage> {
                 ),
               );
             } else if (state.message.isNotEmpty == true) {
-              // context.read<PostBloc>().add(LoadPostsEvent(
-              //       range:
-              //           context.read<UserBloc>().state.user.range?.toDouble() ??
-              //               5.0,
-              //       userId: state.user.id ?? '',
-              //       lat:
-              //           context.read<LocationBloc>().state.position?.latitude ??
-              //               0,
-              //       long: context
-              //               .read<LocationBloc>()
-              //               .state
-              //               .position
-              //               ?.longitude ??
-              //           0,
-              //     ));
+              if (state.message == 'Signed In Successfully!') {
+                final String id = context.read<AuthBloc>().state.user.id ?? '';
+
+                context.read<UserBloc>().add(GetAttendanceEvent(id: id));
+                context.read<UserBloc>().add(GetLeavesEvent(id: id));
+                context.read<UserBloc>().add(GetAllAttendencesEvent(id: id));
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      state.message,
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            color: Colors.green,
+                          ),
+                    ),
+                  ),
+                );
+              }
+
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
@@ -79,7 +84,7 @@ class _RegistrationPageState extends State<SignInPage> {
               height: MediaQuery.of(context).size.height,
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/login.jpg'),
+                  image: AssetImage('assets/images/1.png'),
                   fit: BoxFit.cover,
                 ),
               ),

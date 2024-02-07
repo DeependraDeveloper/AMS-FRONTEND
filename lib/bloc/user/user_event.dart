@@ -7,6 +7,7 @@ class UserEvent extends Equatable {
   List<Object> get props => [];
 }
 
+// clock in/out event for employee and admin
 final class ClockInOutEvent extends UserEvent {
   const ClockInOutEvent({
     required this.id,
@@ -22,6 +23,7 @@ final class ClockInOutEvent extends UserEvent {
       ];
 }
 
+// get attendance event for admin and employee for today
 final class GetAttendanceEvent extends UserEvent {
   const GetAttendanceEvent({
     required this.id,
@@ -34,6 +36,7 @@ final class GetAttendanceEvent extends UserEvent {
       ];
 }
 
+// add leave request event for employee
 final class AddLeaveRequestEvent extends UserEvent {
   const AddLeaveRequestEvent({
     required this.leaveType,
@@ -58,7 +61,7 @@ final class AddLeaveRequestEvent extends UserEvent {
       ];
 }
 
-
+// get leaves event for admin and employee
 final class GetLeavesEvent extends UserEvent {
   const GetLeavesEvent({
     required this.id,
@@ -68,5 +71,63 @@ final class GetLeavesEvent extends UserEvent {
   @override
   List<Object> get props => [
         id,
+      ];
+}
+
+// add employee event for admin
+final class AddEmployeeEvent extends UserEvent {
+  const AddEmployeeEvent({
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.phone,
+    required this.password,
+    required this.department,
+    required this.designation,
+  });
+  final String id;
+  final String name;
+  final String email;
+  final String phone;
+  final String password;
+  final String department;
+  final String designation;
+
+  @override
+  List<Object> get props => [
+        id,
+        name,
+        email,
+        phone,
+        password,
+        department,
+        designation,
+      ];
+}
+
+// get all attendences event for employee
+final class GetAllAttendencesEvent extends UserEvent {
+  const GetAllAttendencesEvent({
+    required this.id,
+  });
+  final String id;
+
+  @override
+  List<Object> get props => [
+        id,
+      ];
+}
+
+// get all employees event for admin
+
+final class GetAllEmployeesEvent extends UserEvent {
+  const GetAllEmployeesEvent({
+    required this.organization,
+  });
+  final String organization;
+
+  @override
+  List<Object> get props => [
+        organization,
       ];
 }

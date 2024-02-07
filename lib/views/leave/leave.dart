@@ -51,8 +51,15 @@ class LeavePage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             color: Colors.black,
             child: state.leaves.isEmpty
-                ? const Center(
-                    child: Text('No leaves found'),
+                ? Center(
+                    child: Text(
+                      role == 'employee' ? 'No Leaves' : 'No Leave Requests',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   )
                 : ListView.builder(
                     itemCount: state.leaves.length,

@@ -54,6 +54,29 @@ abstract class UserRepository {
   });
 
 
+  // addEmployee
+  Future<JsonResponse> addEmployee({
+    required String id,
+    required String name,
+    required String email,
+    required String phone,
+    required String password,
+    required String department,
+    required String designation,
+  });
+
+
+  // getAllAttendences
+  Future<JsonResponse> getAllAttendences({
+    required String id,
+  });
+
+
+  // getAllUsers
+  Future<JsonResponse> getAllUsers({
+    required String organization,
+  });
+
 }
 
 class UserRepositoryImpl implements UserRepository {
@@ -160,4 +183,50 @@ class UserRepositoryImpl implements UserRepository {
       id: id,
     );
   }
+
+
+   // addEmployee
+  @override
+  Future<JsonResponse> addEmployee({
+    required String id,
+    required String name,
+    required String email,
+    required String phone,
+    required String password,
+    required String department,
+    required String designation,
+  }) {
+    return userService.addEmployee(
+      id: id,
+      name: name,
+      email: email,
+      phone: phone,
+      password: password,
+      department: department,
+      designation: designation,
+    );
+  }
+
+
+  // getAllAttendences
+  @override
+  Future<JsonResponse> getAllAttendences({
+    required String id,
+  }) {
+    return userService.getAllAttendences(
+      id: id,
+    );
+  }
+
+
+  // getAllUsers
+  @override
+  Future<JsonResponse> getAllUsers({
+    required String organization,
+  }) {
+    return userService.getAllUsers(
+      organization: organization,
+    );
+  }
+
 }

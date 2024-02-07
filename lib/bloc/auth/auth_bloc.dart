@@ -20,7 +20,6 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
 
   final UserRepository repository;
 
-
   // signIn
   FutureOr<void> _onSignInEvent(
       SignInEvent event, Emitter<AuthState> emit) async {

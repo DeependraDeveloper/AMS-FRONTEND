@@ -19,6 +19,7 @@ class Application extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
+          lazy: false,
           create: (context) => AuthBloc(
             repository: UserRepositoryImpl(
               userService: UserService(
@@ -28,11 +29,12 @@ class Application extends StatelessWidget {
           ),
         ),
         BlocProvider<ConnectivityBloc>(
-          create: (context) =>
-              ConnectivityBloc(connectivity: Connectivity(), dio: Dio()),
+          create: (context) => ConnectivityBloc(
+            connectivity: Connectivity(),
+            dio: Dio(),
+          ),
         ),
         BlocProvider<UserBloc>(
-          lazy: false,
           create: (context) => UserBloc(
             repository: UserRepositoryImpl(
               userService: UserService(
@@ -42,12 +44,26 @@ class Application extends StatelessWidget {
           )
             ..add(
               GetAttendanceEvent(
-                id: context.read<AuthBloc>().state.user.id ?? '',
+                id: BlocProvider.of<AuthBloc>(context).state.user.id ?? '',
               ),
             )
             ..add(
               GetLeavesEvent(
-                id: context.read<AuthBloc>().state.user.id ?? '',
+                id: BlocProvider.of<AuthBloc>(context).state.user.id ?? '',
+              ),
+            )
+            ..add(
+              GetAllAttendencesEvent(
+                id: BlocProvider.of<AuthBloc>(context).state.user.id ?? '',
+              ),
+            )
+            ..add(
+              GetAllEmployeesEvent(
+                organization: BlocProvider.of<AuthBloc>(context)
+                        .state
+                        .user
+                        .organization ??
+                    '',
               ),
             ),
         ),

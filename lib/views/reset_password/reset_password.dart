@@ -81,7 +81,7 @@ class _RegistrationPageState extends State<ResetPasswordPage> {
               height: MediaQuery.of(context).size.height,
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/reset_password.jpg'),
+                  image: AssetImage('assets/images/2.png'),
                   fit: BoxFit.cover,
                 ),
               ),
