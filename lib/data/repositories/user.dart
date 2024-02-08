@@ -96,6 +96,18 @@ abstract class UserRepository {
   Future<JsonResponse> getUser({
     required String id,
   });
+
+  // approveOrRejectLeave
+  Future<JsonResponse> approveOrRejectLeave({
+    required String userId,
+    required String leaveId,
+  });
+
+
+  // downloadAttendence
+  Future<JsonResponse> downloadAttendence({
+    required String id,
+  });
 }
 
 class UserRepositoryImpl implements UserRepository {
@@ -285,4 +297,25 @@ class UserRepositoryImpl implements UserRepository {
     );
   }
 
+  // approveOrRejectLeave
+  @override
+  Future<JsonResponse> approveOrRejectLeave({
+    required String userId,
+    required String leaveId,
+  }) {
+    return userService.approveOrRejectLeave(
+      userId: userId,
+      leaveId: leaveId,
+    );
+  }
+
+  // downloadAttendence
+  @override
+  Future<JsonResponse> downloadAttendence({
+    required String id,
+  }) {
+    return userService.downloadAttendence(
+      id: id,
+    );
+  }
 }

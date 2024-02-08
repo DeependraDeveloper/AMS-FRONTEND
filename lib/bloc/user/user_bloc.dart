@@ -23,6 +23,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<GetAllEmployeesEvent>(_onGetAllEmployeesEvent);
     on<UpdateUserEvent>(_onUpdateUserEvent);
     on<GetUserEvent>(_onGetUserEvent);
+    on<ApproveOrRejectLeaveEvent>(_onApproveOrRejectLeaveEvent);
+    on<DownloadAttendanceEvent>(_onDownloadAttendanceEvent);
   }
 
   final UserRepository repository;
@@ -264,6 +266,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     }
   }
 
+  // update user or admin
   Future<FutureOr<void>> _onUpdateUserEvent(
       UpdateUserEvent event, Emitter<UserState> emit) async {
     emit(state.copyWith(isLoading: true, error: '', message: ''));
@@ -299,6 +302,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     }
   }
 
+  // get user event for admin and employee
   Future<FutureOr<void>> _onGetUserEvent(
       GetUserEvent event, Emitter<UserState> emit) async {
     emit(state.copyWith(isLoading: true, error: '', message: ''));
@@ -314,6 +318,68 @@ class UserBloc extends Bloc<UserEvent, UserState> {
               message: response.message,
               user: response.data as User),
         );
+      } else {
+        emit(
+          state.copyWith(
+            isLoading: false,
+            error: 'Error : ${response.message}',
+          ),
+        );
+      }
+    } on Exception catch (_) {
+      emit(
+        state.copyWith(
+          isLoading: false,
+          error: 'Error : $_',
+        ),
+      );
+    }
+  }
+
+  Future<FutureOr<void>> _onApproveOrRejectLeaveEvent(
+      ApproveOrRejectLeaveEvent event, Emitter<UserState> emit) async {
+    emit(state.copyWith(isLoading: true, error: '', message: ''));
+    try {
+      final response = await repository.approveOrRejectLeave(
+        userId: event.userId,
+        leaveId: event.leaveId,
+      );
+
+      if (response.success) {
+        add(GetLeavesEvent(id: event.userId));
+        emit(state.copyWith(isLoading: false, message: response.message));
+      } else {
+        emit(
+          state.copyWith(
+            isLoading: false,
+            error: 'Error : ${response.message}',
+          ),
+        );
+      }
+    } on Exception catch (_) {
+      emit(
+        state.copyWith(
+          isLoading: false,
+          error: 'Error : $_',
+        ),
+      );
+    }
+  }
+
+  Future<FutureOr<void>> _onDownloadAttendanceEvent(
+      DownloadAttendanceEvent event, Emitter<UserState> emit) async {
+    emit(state.copyWith(isLoading: true, error: '', message: ''));
+    try {
+      final response = await repository.downloadAttendence(
+        id: event.id,
+      );
+
+
+      if (response.success) {
+
+
+       
+        emit(state.copyWith(isLoading: false, message: response.message));
       } else {
         emit(
           state.copyWith(

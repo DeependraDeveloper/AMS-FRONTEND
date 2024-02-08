@@ -370,7 +370,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                               Radius.circular(10),
                             ),
                           ),
-                          prefixIcon: const Icon(Icons.ads_click_outlined),
+                          prefixIcon: const Icon(Icons.category),
                           labelText: 'Department',
                           labelStyle: const TextStyle(color: Colors.black),
                           errorStyle: const TextStyle(
@@ -452,7 +452,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                               Radius.circular(10),
                             ),
                           ),
-                          prefixIcon: const Icon(Icons.ads_click_outlined),
+                          prefixIcon: const Icon(Icons.work),
                           labelText: 'Designation',
                           labelStyle: const TextStyle(color: Colors.black),
                           errorStyle: const TextStyle(

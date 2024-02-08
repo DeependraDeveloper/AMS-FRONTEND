@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:amsystm/data/models/attendence.dart';
 import 'package:amsystm/data/models/json_reposne.dart';
 import 'package:amsystm/data/models/leave.dart';
 import 'package:amsystm/data/models/user.dart';
 import 'package:amsystm/utils/constants.dart';
 import 'package:dio/dio.dart';
+import 'package:external_path/external_path.dart';
 
 class UserService {
   UserService({required this.dio}) {
@@ -454,7 +457,7 @@ class UserService {
         data: updateObj,
       );
 
-      if (response.statusCode == 200) {      
+      if (response.statusCode == 200) {
         return JsonResponse.success(
           message: response.data?["message"]?.toString() ?? 'Success!',
         );
@@ -477,7 +480,6 @@ class UserService {
       );
     }
   }
-
 
   // getUser
   Future<JsonResponse> getUser({
@@ -514,4 +516,92 @@ class UserService {
       );
     }
   }
+
+  // approveOrRejectLeave
+  Future<JsonResponse> approveOrRejectLeave({
+    required String userId,
+    required String leaveId,
+  }) async {
+    try {
+      final Response response = await dio.post(
+        '/approve-reject-leave',
+        data: {
+          'userId': userId,
+          'leaveId': leaveId,
+        },
+      );
+      if (response.statusCode == 200) {
+        return JsonResponse.success(
+          message: response.data?["message"]?.toString() ?? 'Success!',
+        );
+      } else {
+        final error = response.data?["message"]?.toString();
+        return JsonResponse.failure(
+          statusCode: response.statusCode ?? 500,
+          message: error ?? 'Something went wrong!',
+        );
+      }
+    } on DioException catch (e) {
+      final error = e.response?.data?["message"]?.toString();
+      return JsonResponse.failure(
+        message: error.toString(),
+        statusCode: e.response?.statusCode ?? 500,
+      );
+    } on Exception catch (_) {
+      return JsonResponse.failure(
+        message: 'Something went wrong!',
+      );
+    }
+  }
+
+  // downloadAttendence
+  Future<JsonResponse> downloadAttendence({
+    required String id,
+  }) async {
+    try {
+      final Response response = await dio.get(
+        '/attendence-csv/$id',
+        options: Options(responseType: ResponseType.bytes),
+      );
+      if (response.statusCode == 200) {
+        var path = await ExternalPath.getExternalStoragePublicDirectory(
+            ExternalPath.DIRECTORY_DOCUMENTS);
+
+        final String filePath = '$path/attendence.csv';
+
+        final File file = File(filePath);
+
+        await file.writeAsBytes(response.data as dynamic, flush: true);
+
+        return JsonResponse.success(
+          message: 'Attendence Csv Downloaded Successfully!',
+        );
+      } else {
+        final error = response.data?["message"]?.toString();
+        return JsonResponse.failure(
+          statusCode: response.statusCode ?? 500,
+          message: error ?? 'Something went wrong!',
+        );
+      }
+    } on DioException catch (e) {
+      final error = e.response?.data?["message"]?.toString();
+      return JsonResponse.failure(
+        message: error.toString(),
+        statusCode: e.response?.statusCode ?? 500,
+      );
+    } on Exception catch (_) {
+      return JsonResponse.failure(
+        message: 'Something went wrong!',
+      );
+    }
+  }
 }
+
+
+
+// final String dir = (await getExternalStorageDirectory())!.path;
+//final String dir = (await getApplicationDocumentsDirectory()).path;
+// Save the file to the download directory
+// final String filePath = '$dir/attendence.csv';
+// final File file = File(filePath);
+ 

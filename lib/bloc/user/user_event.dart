@@ -132,7 +132,6 @@ final class GetAllEmployeesEvent extends UserEvent {
       ];
 }
 
-
 // update user event for admin and employee
 
 final class UpdateUserEvent extends UserEvent {
@@ -165,11 +164,42 @@ final class UpdateUserEvent extends UserEvent {
       ];
 }
 
-
 // get user event for admin and employee
 
 final class GetUserEvent extends UserEvent {
   const GetUserEvent({
+    required this.id,
+  });
+  final String id;
+
+  @override
+  List<Object> get props => [
+        id,
+      ];
+}
+
+// approve or reject leave event for admin
+
+final class ApproveOrRejectLeaveEvent extends UserEvent {
+  const ApproveOrRejectLeaveEvent({
+    required this.userId,
+    required this.leaveId,
+  });
+  final String userId;
+  final String leaveId;
+
+  @override
+  List<Object> get props => [
+        userId,
+        leaveId,
+      ];
+}
+
+
+// Download attendance event for admin
+
+final class DownloadAttendanceEvent extends UserEvent {
+  const DownloadAttendanceEvent({
     required this.id,
   });
   final String id;

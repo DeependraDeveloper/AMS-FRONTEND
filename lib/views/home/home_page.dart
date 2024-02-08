@@ -15,8 +15,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final String name = context.read<AuthBloc>().state.user.name ?? '';
-    final String profilePic =
-        context.read<AuthBloc>().state.user.profilePic ?? '';
+    // final String profilePic =
+    //     context.read<AuthBloc>().state.user.profilePic ?? '';
 
     return Scaffold(
       body: Container(

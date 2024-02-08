@@ -2,7 +2,6 @@ import 'package:amsystm/bloc/auth/auth_bloc.dart';
 import 'package:amsystm/bloc/user/user_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 class AttedencePage extends StatelessWidget {
@@ -11,25 +10,54 @@ class AttedencePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String role = context.read<AuthBloc>().state.user.role ?? '';
+    final String id = context.read<AuthBloc>().state.user.id ?? '';
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Attendences'),
+        title: Text(
+          role == 'employee' ? 'Attendences' : 'Employees',
+          style: const TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       floatingActionButton: role == 'employee'
           ? null
-          : FloatingActionButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              backgroundColor: Colors.blue,
-              onPressed: () {
-                context.pushNamed('add-employee');
-              },
-              child: const Icon(
-                Icons.add,
-                color: Colors.white,
-                size: 30,
-              ),
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                FloatingActionButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  backgroundColor: Colors.blue,
+                  onPressed: () {
+                    context.pushNamed('add-employee');
+                  },
+                  child: const Icon(
+                    Icons.add,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                FloatingActionButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  backgroundColor: Colors.blue,
+                  onPressed: () {
+                    context.read<UserBloc>().add(
+                          DownloadAttendanceEvent(id: id),
+                        );
+                  },
+                  child: const Icon(
+                    Icons.download,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                ),
+              ],
             ),
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -74,24 +102,92 @@ class AttedencePage extends StatelessWidget {
                           children: [
                             Text(
                               'Total Attendences: ${state.attendences.length}',
-                              style: const TextStyle(color: Colors.white),
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 20,
+                              ),
                             ),
                             Expanded(
                               child: ListView.builder(
                                 itemCount: state.attendences.length,
                                 itemBuilder: (context, index) {
                                   final attendence = state.attendences[index];
-                                  return Card(
-                                    color: Colors.white,
-                                    child: ListTile(
-                                      trailing: Text(attendence.createdAt
-                                              ?.toIso8601String()
-                                              .split('T')
-                                              .first ??
-                                          'N/A'),
-                                      title: Text(attendence.inTime ?? 'N/A'),
-                                      subtitle:
-                                          Text(attendence.outTime ?? 'N/A'),
+                                  return Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 100,
+                                    margin: const EdgeInsets.only(bottom: 10),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 8,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.grey),
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.grey[200],
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              attendence.createdAt
+                                                      ?.toIso8601String()
+                                                      .split('T')
+                                                      .first ??
+                                                  'N/A',
+                                              style: const TextStyle(
+                                                fontSize: 18,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 10),
+                                            Text(
+                                              attendence.status
+                                                      ?.toUpperCase() ??
+                                                  'N/A',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: attendence.status ==
+                                                        'present'
+                                                    ? Colors.green
+                                                    : Colors.red,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "⏳ ${attendence.inTime ?? 'N/A'}",
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 10),
+                                            Text(
+                                              "⌛ ${attendence.outTime ?? 'N/A'}",
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
                                   );
                                 },
@@ -137,24 +233,90 @@ class AttedencePage extends StatelessWidget {
                           children: [
                             Text(
                               'Total Employees: ${state.users.length}',
-                              style: const TextStyle(color: Colors.white),
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 20,
+                              ),
                             ),
                             Expanded(
                               child: ListView.builder(
                                 itemCount: state.users.length,
                                 itemBuilder: (context, index) {
                                   final user = state.users[index];
-                                  return Card(
-                                    color: Colors.white,
-                                    child: ListTile(
-                                      trailing: Text(user.createdAt
-                                              ?.toIso8601String()
-                                              .split('T')
-                                              .first ??
-                                          'N/A'),
-                                      title: Text(user.name ?? 'N/A'),
-                                      subtitle: Text(
-                                        user.phone.toString(),
+                                  return GestureDetector(
+                                    onTap: () {
+                                      context.pushNamed('employee-detail',
+                                          extra: user);
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 120,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.grey),
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.grey[200],
+                                      ),
+                                      margin: const EdgeInsets.only(bottom: 10),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 8,
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "👦 ${user.name ?? 'N/A'}",
+                                                style: const TextStyle(
+                                                  fontSize: 18,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 10),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    "🎓 ${user.department.toString()}",
+                                                    style: const TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 180),
+                                                  Text(
+                                                    "🏠 ${user.createdAt?.toIso8601String().split('T').first}",
+                                                    style: const TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(height: 10),
+                                              Text(
+                                                "💼 ${user.designation.toString()}",
+                                                style: const TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   );
@@ -166,8 +328,6 @@ class AttedencePage extends StatelessWidget {
                       );
                     },
                   )
-
-            // for admin show all employess and their attendence
           ],
         ),
       ),

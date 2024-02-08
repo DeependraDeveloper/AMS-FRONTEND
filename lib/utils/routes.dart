@@ -1,7 +1,9 @@
 import 'package:amsystm/bloc/auth/auth_bloc.dart';
+import 'package:amsystm/data/models/user.dart';
 import 'package:amsystm/navigation_observer.dart';
 import 'package:amsystm/observer.dart';
 import 'package:amsystm/views/attendence/add_employee.dart';
+import 'package:amsystm/views/attendence/employee_detail.dart';
 import 'package:amsystm/views/home/main_page.dart';
 import 'package:amsystm/views/leave/add_leave.dart';
 import 'package:amsystm/views/profile/edit_profile.dart';
@@ -64,17 +66,17 @@ class AppRouter {
                 GoRoute(
                   path: 'edit_profile',
                   name: 'edit_profile',
-                  builder: (context, state) =>  EditProfilePage(
+                  builder: (context, state) => EditProfilePage(
                     details: state.extra as Map<String, dynamic>,
                   ),
                 ),
-                // GoRoute(
-                //   path: 'friend',
-                //   name: 'friend',
-                //   builder: (context, state) => FriendProfile(
-                //     friend: state.extra as User,
-                //   ),
-                // ),
+                GoRoute(
+                  path: 'employee-detail',
+                  name: 'employee-detail',
+                  builder: (context, state) => EmployeeDetailPage(
+                    user: state.extra as User,
+                  ),
+                ),
                 // GoRoute(
                 //   path: 'updatePost',
                 //   name: 'updatePost',

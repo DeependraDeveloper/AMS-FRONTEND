@@ -11,7 +11,7 @@ class LeavePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final User user = context.read<AuthBloc>().state.user;
-    final String role = user.role ?? '';
+    final String role = user.role ?? 'company';
 
     return Scaffold(
       appBar: AppBar(
@@ -181,8 +181,6 @@ class LeavePage extends StatelessWidget {
                                   ),
                                   role == 'company'
                                       ? GestureDetector(
-                                          //enum: ['Pending', 'Approved', 'Rejected'],
-
                                           onTap: () {
                                             final status =
                                                 leave.leaveStatus == 'Approved'
@@ -200,10 +198,17 @@ class LeavePage extends StatelessWidget {
                                                   TextButton(
                                                     onPressed: () {
                                                       context
-                                                          .read<AuthBloc>()
+                                                          .read<UserBloc>()
                                                           .add(
-                                                            const SignOutEvent(),
+                                                            ApproveOrRejectLeaveEvent(
+                                                                userId:
+                                                                    user.id ??
+                                                                        '',
+                                                                leaveId:
+                                                                    leave.id ??
+                                                                        ''),
                                                           );
+                                                      context.pop(context);
                                                     },
                                                     child: const Text('Yes'),
                                                   ),
