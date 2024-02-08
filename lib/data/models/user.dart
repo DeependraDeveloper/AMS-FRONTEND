@@ -2,6 +2,7 @@ import 'dart:convert';
 
 class User {
   final String? name;
+  final String? profilePic;
   final String? role;
   final String? email;
   final String? password;
@@ -17,6 +18,7 @@ class User {
 
   const User({
     this.name,
+    this.profilePic,
     this.role,
     this.email,
     this.password,
@@ -33,6 +35,7 @@ class User {
 
   User copyWith({
     String? name,
+    String? profilePic,
     String? role,
     String? email,
     String? password,
@@ -48,6 +51,7 @@ class User {
   }) =>
       User(
         name: name ?? this.name,
+        profilePic: profilePic ?? this.profilePic,
         role: role ?? this.role,
         email: email ?? this.email,
         password: password ?? this.password,
@@ -68,6 +72,7 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         name: json["name"],
+        profilePic: json["profilePic"],
         role: json["role"],
         email: json["email"],
         password: json["password"],
@@ -88,6 +93,7 @@ class User {
 
   Map<String, dynamic> toJson() => {
         "name": name,
+        "profilePic": profilePic,
         "role": role,
         "email": email,
         "password": password,

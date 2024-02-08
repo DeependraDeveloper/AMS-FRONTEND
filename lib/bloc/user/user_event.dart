@@ -131,3 +131,51 @@ final class GetAllEmployeesEvent extends UserEvent {
         organization,
       ];
 }
+
+
+// update user event for admin and employee
+
+final class UpdateUserEvent extends UserEvent {
+  const UpdateUserEvent({
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.phone,
+    required this.department,
+    required this.designation,
+    required this.organization,
+  });
+  final String id;
+  final String name;
+  final String email;
+  final String phone;
+  final String department;
+  final String designation;
+  final String organization;
+
+  @override
+  List<Object> get props => [
+        id,
+        name,
+        email,
+        phone,
+        department,
+        designation,
+        organization,
+      ];
+}
+
+
+// get user event for admin and employee
+
+final class GetUserEvent extends UserEvent {
+  const GetUserEvent({
+    required this.id,
+  });
+  final String id;
+
+  @override
+  List<Object> get props => [
+        id,
+      ];
+}

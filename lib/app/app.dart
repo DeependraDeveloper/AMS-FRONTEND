@@ -57,13 +57,14 @@ class Application extends StatelessWidget {
                 id: BlocProvider.of<AuthBloc>(context).state.user.id ?? '',
               ),
             )
+            ..add(GetAllEmployeesEvent(
+              organization:
+                  BlocProvider.of<AuthBloc>(context).state.user.organization ??
+                      '',
+            ))
             ..add(
-              GetAllEmployeesEvent(
-                organization: BlocProvider.of<AuthBloc>(context)
-                        .state
-                        .user
-                        .organization ??
-                    '',
+              GetUserEvent(
+                id: BlocProvider.of<AuthBloc>(context).state.user.id ?? '',
               ),
             ),
         ),

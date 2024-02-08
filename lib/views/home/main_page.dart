@@ -26,40 +26,46 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: pages[currIdx],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currIdx,
-        onTap: (value) {
-          setState(() {
-            currIdx = value;
-          });
-        },
-        elevation: 1,
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.blue,
-        unselectedItemColor: Colors.black,
-        selectedItemColor: Colors.white,
-        iconSize: 30,
-        showSelectedLabels: true,
-        showUnselectedLabels: false,
-        selectedFontSize: 14,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'H O M E',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.hourglass_empty_outlined),
-            label: 'A T T E N D E N C',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_business_outlined),
-            label: 'L E A V E',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'P R O F I L E',
-          ),
-        ],
+      bottomNavigationBar: ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        ),
+        child: BottomNavigationBar(
+          currentIndex: currIdx,
+          onTap: (value) {
+            setState(() {
+              currIdx = value;
+            });
+          },
+          elevation: 1,
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.blue,
+          unselectedItemColor: Colors.black,
+          selectedItemColor: Colors.white,
+          iconSize: 30,
+          showSelectedLabels: true,
+          showUnselectedLabels: false,
+          selectedFontSize: 14,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'H O M E',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.hourglass_empty_outlined),
+              label: 'A T T E N D E N C',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.add_business_outlined),
+              label: 'L E A V E',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'P R O F I L E',
+            ),
+          ],
+        ),
       ),
     );
   }

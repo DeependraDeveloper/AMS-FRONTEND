@@ -7,6 +7,7 @@ class UserState extends Equatable {
     this.employeeLeaves = const <Leave>[], // all employees leaves
     this.attendences = const <Attendence>[], //particular user attendences
     this.users = const <User>[], // all users
+    this.user = const User(), // particular user
     this.isLoading = false,
     this.error = '',
     this.message = '',
@@ -17,6 +18,7 @@ class UserState extends Equatable {
   final Attendence attendence;
   final List<Attendence> attendences;
   final List<User> users;
+  final User user;
   final bool isLoading;
   final String error;
   final String message;
@@ -27,6 +29,7 @@ class UserState extends Equatable {
     Attendence? attendence,
     List<Attendence>? attendences,
     List<User>? users,
+    User? user,
     bool? isLoading,
     String? error,
     String? message,
@@ -37,6 +40,7 @@ class UserState extends Equatable {
       attendence: attendence ?? this.attendence,
       attendences: attendences ?? this.attendences,
       users: users ?? this.users,
+      user: user ?? this.user,
       isLoading: isLoading ?? this.isLoading,
       error: error ?? this.error,
       message: message ?? this.message,
@@ -50,6 +54,7 @@ class UserState extends Equatable {
         attendence,
         attendences,
         users,
+        user,
         isLoading,
         error,
         message

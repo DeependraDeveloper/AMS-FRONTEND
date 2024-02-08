@@ -80,48 +80,35 @@ class LeavePage extends StatelessWidget {
                         final leave = state.leaves[index];
                         return Container(
                           width: MediaQuery.of(context).size.width,
-                          height: 120,
+                          height: 170,
                           margin: const EdgeInsets.only(bottom: 10),
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: Colors.grey)),
+                            color: Colors.grey[100],
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.grey),
+                          ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text(
-                                leave.leaveType ?? '',
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    leave.leaveFrom ?? '',
+                                    leave.leaveType ?? '',
                                     style: const TextStyle(
-                                      fontSize: 16,
                                       color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    leave.leaveTo ?? '',
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.black,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   Text(
                                     leave.leaveStatus ?? '',
                                     style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
                                       color: leave.leaveStatus == 'Approved'
                                           ? Colors.green
                                           : leave.leaveStatus == 'Rejected'
@@ -132,13 +119,119 @@ class LeavePage extends StatelessWidget {
                                 ],
                               ),
                               const SizedBox(height: 10),
-                              Text(
-                                leave.leaveReason ?? '',
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "🧑 ${leave.leaveAppliedBy?.name ?? 'N/A'}",
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    "📱 ${leave.leaveAppliedBy?.phone.toString() ?? 'N/A'}",
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "📅 ${leave.leaveFrom ?? 'N/A'}",
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    "📅 ${leave.leaveTo ?? ''}",
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  FittedBox(
+                                    child: Text(
+                                      "🚩 ${leave.leaveReason ?? ''}",
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  role == 'company'
+                                      ? GestureDetector(
+                                          //enum: ['Pending', 'Approved', 'Rejected'],
+
+                                          onTap: () {
+                                            final status =
+                                                leave.leaveStatus == 'Approved'
+                                                    ? 'Reject'
+                                                    : 'Approve';
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(
+                                                title: const Text(
+                                                    'Perform Action'),
+                                                content: Text(
+                                                  'Are you sure you want to $status this leave request?',
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      context
+                                                          .read<AuthBloc>()
+                                                          .add(
+                                                            const SignOutEvent(),
+                                                          );
+                                                    },
+                                                    child: const Text('Yes'),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: const Text('No'),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                          child: Container(
+                                            width: 120,
+                                            height: 40,
+                                            decoration: BoxDecoration(
+                                              color: Colors.blue.shade200,
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            child: const Center(
+                                              child: Text('Action'),
+                                            ),
+                                          ),
+                                        )
+                                      : const SizedBox.shrink(),
+                                ],
                               ),
                             ],
                           ),

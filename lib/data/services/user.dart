@@ -428,4 +428,90 @@ class UserService {
       );
     }
   }
+
+  // updateUser
+  Future<JsonResponse> updateUser({
+    required String id,
+    required String name,
+    required String email,
+    required String phone,
+    required String department,
+    required String designation,
+    required String organization,
+  }) async {
+    try {
+      var updateObj = {};
+      if (id.isNotEmpty) updateObj['id'] = id;
+      if (name.isNotEmpty) updateObj['name'] = name;
+      if (email.isNotEmpty) updateObj['email'] = email;
+      if (phone.isNotEmpty) updateObj['phone'] = phone;
+      if (department.isNotEmpty) updateObj['department'] = department;
+      if (designation.isNotEmpty) updateObj['designation'] = designation;
+      if (organization.isNotEmpty) updateObj['organization'] = organization;
+
+      final Response response = await dio.post(
+        '/update-user',
+        data: updateObj,
+      );
+
+      if (response.statusCode == 200) {      
+        return JsonResponse.success(
+          message: response.data?["message"]?.toString() ?? 'Success!',
+        );
+      } else {
+        final error = response.data?["message"]?.toString();
+        return JsonResponse.failure(
+          statusCode: response.statusCode ?? 500,
+          message: error ?? 'Something went wrong!',
+        );
+      }
+    } on DioException catch (e) {
+      final error = e.response?.data?["message"]?.toString();
+      return JsonResponse.failure(
+        message: error.toString(),
+        statusCode: e.response?.statusCode ?? 500,
+      );
+    } on Exception catch (_) {
+      return JsonResponse.failure(
+        message: 'Something went wrong!',
+      );
+    }
+  }
+
+
+  // getUser
+  Future<JsonResponse> getUser({
+    required String id,
+  }) async {
+    try {
+      final Response response = await dio.get(
+        '/$id',
+      );
+
+      if (response.statusCode == 200) {
+        final data = User.fromJson(response.data ?? <String, dynamic>{});
+
+        return JsonResponse.success(
+          message: 'User Fetched Successfully!',
+          data: data,
+        );
+      } else {
+        final error = response.data?["message"]?.toString();
+        return JsonResponse.failure(
+          statusCode: response.statusCode ?? 500,
+          message: error ?? 'Something went wrong!',
+        );
+      }
+    } on DioException catch (e) {
+      final error = e.response?.data?["message"]?.toString();
+      return JsonResponse.failure(
+        message: error.toString(),
+        statusCode: e.response?.statusCode ?? 500,
+      );
+    } on Exception catch (_) {
+      return JsonResponse.failure(
+        message: 'Something went wrong!',
+      );
+    }
+  }
 }

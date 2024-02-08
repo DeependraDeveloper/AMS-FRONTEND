@@ -21,6 +21,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<AddEmployeeEvent>(_onAddEmployeeEvent);
     on<GetAllAttendencesEvent>(_onGetAllAttendanceEvent);
     on<GetAllEmployeesEvent>(_onGetAllEmployeesEvent);
+    on<UpdateUserEvent>(_onUpdateUserEvent);
+    on<GetUserEvent>(_onGetUserEvent);
   }
 
   final UserRepository repository;
@@ -244,6 +246,74 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         final data = response.data as List<User>;
         emit(state.copyWith(
             isLoading: false, message: response.message, users: data));
+      } else {
+        emit(
+          state.copyWith(
+            isLoading: false,
+            error: 'Error : ${response.message}',
+          ),
+        );
+      }
+    } on Exception catch (_) {
+      emit(
+        state.copyWith(
+          isLoading: false,
+          error: 'Error : $_',
+        ),
+      );
+    }
+  }
+
+  Future<FutureOr<void>> _onUpdateUserEvent(
+      UpdateUserEvent event, Emitter<UserState> emit) async {
+    emit(state.copyWith(isLoading: true, error: '', message: ''));
+    try {
+      final response = await repository.updateUser(
+        id: event.id,
+        name: event.name,
+        email: event.email,
+        phone: event.phone,
+        department: event.department,
+        designation: event.designation,
+        organization: event.organization,
+      );
+
+      if (response.success) {
+        add(GetUserEvent(id: event.id));
+        emit(state.copyWith(isLoading: false, message: response.message));
+      } else {
+        emit(
+          state.copyWith(
+            isLoading: false,
+            error: 'Error : ${response.message}',
+          ),
+        );
+      }
+    } on Exception catch (_) {
+      emit(
+        state.copyWith(
+          isLoading: false,
+          error: 'Error : $_',
+        ),
+      );
+    }
+  }
+
+  Future<FutureOr<void>> _onGetUserEvent(
+      GetUserEvent event, Emitter<UserState> emit) async {
+    emit(state.copyWith(isLoading: true, error: '', message: ''));
+    try {
+      final response = await repository.getUser(
+        id: event.id,
+      );
+
+      if (response.success) {
+        emit(
+          state.copyWith(
+              isLoading: false,
+              message: response.message,
+              user: response.data as User),
+        );
       } else {
         emit(
           state.copyWith(

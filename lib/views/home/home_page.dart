@@ -15,6 +15,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final String name = context.read<AuthBloc>().state.user.name ?? '';
+    final String profilePic =
+        context.read<AuthBloc>().state.user.profilePic ?? '';
 
     return Scaffold(
       body: Container(
@@ -28,7 +30,8 @@ class _HomePageState extends State<HomePage> {
               radius: 100,
               backgroundColor: Colors.white,
               backgroundImage: NetworkImage(
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReFuNVUscuscAPv7N7laen4v8CC5cb99ZDvi6d_N_-htu6NwOmNSBic_UuZWQAn2YsSP4&usqp=CAU'),
+                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReFuNVUscuscAPv7N7laen4v8CC5cb99ZDvi6d_N_-htu6NwOmNSBic_UuZWQAn2YsSP4&usqp=CAU',
+              ),
             ),
             const SizedBox(
               height: 15,

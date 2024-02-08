@@ -94,7 +94,7 @@ class _RegisterTwoState extends State<RegisterTwo> {
                               Radius.circular(10),
                             ),
                           ),
-                          prefixIcon: const Icon(Icons.ads_click_outlined),
+                          prefixIcon: const Icon(Icons.category),
                           labelText: 'Department',
                           labelStyle: const TextStyle(color: Colors.black),
                           errorStyle: const TextStyle(
@@ -176,7 +176,7 @@ class _RegisterTwoState extends State<RegisterTwo> {
                               Radius.circular(10),
                             ),
                           ),
-                          prefixIcon: const Icon(Icons.ads_click_outlined),
+                          prefixIcon: const Icon(Icons.work),
                           labelText: 'Designation',
                           labelStyle: const TextStyle(color: Colors.black),
                           errorStyle: const TextStyle(
@@ -265,7 +265,7 @@ class _RegisterTwoState extends State<RegisterTwo> {
                               Radius.circular(10),
                             ),
                           ),
-                          prefixIcon: const Icon(Icons.account_balance),
+                          prefixIcon: const Icon(Icons.factory),
                           labelText: 'Organization',
                           labelStyle: const TextStyle(color: Colors.black),
                           errorStyle: const TextStyle(

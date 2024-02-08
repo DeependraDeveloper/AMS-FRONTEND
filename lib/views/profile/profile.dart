@@ -1,16 +1,18 @@
 import 'package:amsystm/bloc/auth/auth_bloc.dart';
+import 'package:amsystm/bloc/user/user_bloc.dart';
 import 'package:amsystm/data/models/user.dart';
 import 'package:amsystm/views/home/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final User user = context.read<AuthBloc>().state.user;
-
+    final User user = context.read<UserBloc>().state.user;
+    
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -50,10 +52,10 @@ class ProfilePage extends StatelessWidget {
               const Divider(
                 color: Colors.black,
               ),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     'Personal Information',
                     style: TextStyle(
                       color: Colors.black,
@@ -61,13 +63,25 @@ class ProfilePage extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  Text(
-                    'Edit',
-                    style: TextStyle(
-                      color: Colors.orange,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400,
-                      decoration: TextDecoration.underline,
+                  GestureDetector(
+                    onTap: () {
+                      context.pushNamed('edit_profile', extra: {
+                        'name': user.name,
+                        'email': user.email,
+                        'phone': user.phone.toString(),
+                        'department': user.department,
+                        'designation': user.designation,
+                        'organization': user.organization,
+                      });
+                    },
+                    child: const Text(
+                      'Edit',
+                      style: TextStyle(
+                        color: Colors.orange,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                        decoration: TextDecoration.underline,
+                      ),
                     ),
                   ),
                 ],

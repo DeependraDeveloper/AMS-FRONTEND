@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:amsystm/data/models/user.dart';
+
 class Leave {
   final String? id;
   final String? leaveType;
@@ -7,7 +9,7 @@ class Leave {
   final String? leaveFrom;
   final String? leaveTo;
   final String? leaveStatus;
-  final String? leaveAppliedBy;
+  final User? leaveAppliedBy;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
@@ -30,7 +32,7 @@ class Leave {
     String? leaveFrom,
     String? leaveTo,
     String? leaveStatus,
-    String? leaveAppliedBy,
+    User? leaveAppliedBy,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) =>
@@ -57,7 +59,9 @@ class Leave {
         leaveFrom: json["leaveFrom"],
         leaveTo: json["leaveTo"],
         leaveStatus: json["leaveStatus"],
-        leaveAppliedBy: json["leaveAppliedBy"],
+        leaveAppliedBy: json["leaveAppliedBy"] == null
+            ? null
+            : User.fromJson(json["leaveAppliedBy"]),
         createdAt: json["createdAt"] == null
             ? null
             : DateTime.parse(json["createdAt"]),

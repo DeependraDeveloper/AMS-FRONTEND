@@ -4,6 +4,7 @@ import 'package:amsystm/observer.dart';
 import 'package:amsystm/views/attendence/add_employee.dart';
 import 'package:amsystm/views/home/main_page.dart';
 import 'package:amsystm/views/leave/add_leave.dart';
+import 'package:amsystm/views/profile/edit_profile.dart';
 import 'package:amsystm/views/reset_password/reset_password.dart';
 import 'package:amsystm/views/sign_in/sign_in.dart';
 import 'package:amsystm/views/sign_up/register_one.dart';
@@ -60,11 +61,13 @@ class AppRouter {
                   name: 'add-employee',
                   builder: (context, state) => const AddEmployee(),
                 ),
-                // GoRoute(
-                //   path: 'message',
-                //   name: 'message',
-                //   builder: (context, state) => const MessageScreen(),
-                // ),
+                GoRoute(
+                  path: 'edit_profile',
+                  name: 'edit_profile',
+                  builder: (context, state) =>  EditProfilePage(
+                    details: state.extra as Map<String, dynamic>,
+                  ),
+                ),
                 // GoRoute(
                 //   path: 'friend',
                 //   name: 'friend',
