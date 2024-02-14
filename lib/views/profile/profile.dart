@@ -12,18 +12,11 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final User user = context.read<UserBloc>().state.user;
-    
+
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          color: Colors.white,
-          padding: const EdgeInsets.only(
-            left: 20,
-            right: 20,
-            top: 10,
-          ),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 15),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

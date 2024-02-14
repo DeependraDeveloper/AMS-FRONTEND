@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:amsystm/data/models/all_attendence.dart';
 import 'package:amsystm/data/models/attendence.dart';
 import 'package:amsystm/data/models/leave.dart';
 import 'package:amsystm/data/models/user.dart';
@@ -25,6 +26,12 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<GetUserEvent>(_onGetUserEvent);
     on<ApproveOrRejectLeaveEvent>(_onApproveOrRejectLeaveEvent);
     on<DownloadAttendanceEvent>(_onDownloadAttendanceEvent);
+    on<GetAttendencesOfParticularUserEvent>(
+        _onGetAttendencesOfParticularUserEvent);
+    on<UpdateAttendenceEvent>(_onUpdateAttendenceEvent);
+    on<GetAttendenceReportMonthlyEvent>(_onGetAttendenceReportMonthlyEvent);
+    on<GetAttendenceWithDateRangeEvent>(_onGetAttendenceWithDateRangeEvent);
+    on<UpdateAttendencesEvent>(_onUpdateAttendencesEvent);
   }
 
   final UserRepository repository;
@@ -374,11 +381,164 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         id: event.id,
       );
 
+      if (response.success) {
+        emit(state.copyWith(isLoading: false, message: response.message));
+      } else {
+        emit(
+          state.copyWith(
+            isLoading: false,
+            error: 'Error : ${response.message}',
+          ),
+        );
+      }
+    } on Exception catch (_) {
+      emit(
+        state.copyWith(
+          isLoading: false,
+          error: 'Error : $_',
+        ),
+      );
+    }
+  }
+
+  Future<FutureOr<void>> _onGetAttendencesOfParticularUserEvent(
+      GetAttendencesOfParticularUserEvent event,
+      Emitter<UserState> emit) async {
+    emit(state.copyWith(isLoading: true, error: '', message: ''));
+    try {
+      final response = await repository.getAttendencesOfParticularUser(
+        id: event.id,
+      );
 
       if (response.success) {
+        final data = response.data as List<AllAttendence>;
+        emit(state.copyWith(
+            isLoading: false, message: response.message, allAttendences: data));
+      } else {
+        emit(
+          state.copyWith(
+            isLoading: false,
+            error: 'Error : ${response.message}',
+          ),
+        );
+      }
+    } on Exception catch (_) {
+      emit(
+        state.copyWith(
+          isLoading: false,
+          error: 'Error : $_',
+        ),
+      );
+    }
+  }
 
+  Future<FutureOr<void>> _onUpdateAttendenceEvent(
+      UpdateAttendenceEvent event, Emitter<UserState> emit) async {
+    emit(state.copyWith(isLoading: true, error: '', message: ''));
+    try {
+      final response = await repository.updateAttendence(
+        id: event.id,
+        status: event.status,
+        inTime: event.inTime,
+        outTime: event.outTime,
+      );
 
-       
+      if (response.success) {
+        emit(state.copyWith(isLoading: false, message: response.message));
+      } else {
+        emit(
+          state.copyWith(
+            isLoading: false,
+            error: 'Error : ${response.message}',
+          ),
+        );
+      }
+    } on Exception catch (_) {
+      emit(
+        state.copyWith(
+          isLoading: false,
+          error: 'Error : $_',
+        ),
+      );
+    }
+  }
+
+  Future<FutureOr<void>> _onGetAttendenceReportMonthlyEvent(
+      GetAttendenceReportMonthlyEvent event, Emitter<UserState> emit) async {
+    emit(state.copyWith(isLoading: true, error: '', message: ''));
+    try {
+      final response = await repository.downloadAttendenceMonthy(
+        id: event.id,
+        month: event.month,
+        year: event.year,
+      );
+
+      if (response.success) {
+        emit(state.copyWith(isLoading: false, message: response.message));
+      } else {
+        emit(
+          state.copyWith(
+            isLoading: false,
+            error: 'Error : ${response.message}',
+          ),
+        );
+      }
+    } on Exception catch (_) {
+      emit(
+        state.copyWith(
+          isLoading: false,
+          error: 'Error : $_',
+        ),
+      );
+    }
+  }
+
+  Future<FutureOr<void>> _onGetAttendenceWithDateRangeEvent(
+      GetAttendenceWithDateRangeEvent event, Emitter<UserState> emit) async {
+    emit(state.copyWith(isLoading: true, error: '', message: ''));
+    try {
+      final response = await repository.getAttendenceWithDateRange(
+        id: event.id,
+        startDate: event.startDate,
+        endDate: event.endDate,
+      );
+
+      if (response.success) {
+        final data = response.data as List<Attendence>;
+        emit(state.copyWith(
+            isLoading: false,
+            message: response.message,
+            dateRangeAttendences: data));
+      } else {
+        emit(
+          state.copyWith(
+            isLoading: false,
+            error: 'Error : ${response.message}',
+          ),
+        );
+      }
+    } on Exception catch (_) {
+      emit(
+        state.copyWith(
+          isLoading: false,
+          error: 'Error : $_',
+        ),
+      );
+    }
+  }
+
+  Future<FutureOr<void>> _onUpdateAttendencesEvent(UpdateAttendencesEvent event, Emitter<UserState> emit) async {
+     emit(state.copyWith(isLoading: true, error: '', message: ''));
+    try {
+      
+      final response = await repository.updateAttendences(
+        ids: event.ids,
+        status: event.status,
+        inTime: event.inTime,
+        outTime: event.outTime,
+      );
+
+      if (response.success) {
         emit(state.copyWith(isLoading: false, message: response.message));
       } else {
         emit(

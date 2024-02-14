@@ -2,8 +2,9 @@ import 'package:amsystm/bloc/auth/auth_bloc.dart';
 import 'package:amsystm/data/models/user.dart';
 import 'package:amsystm/navigation_observer.dart';
 import 'package:amsystm/observer.dart';
-import 'package:amsystm/views/attendence/add_employee.dart';
-import 'package:amsystm/views/attendence/employee_detail.dart';
+import 'package:amsystm/views/attendence_employee/add_employee.dart';
+import 'package:amsystm/views/attendence_employee/edit_attendence.dart';
+import 'package:amsystm/views/attendence_employee/employee_detail.dart';
 import 'package:amsystm/views/home/main_page.dart';
 import 'package:amsystm/views/leave/add_leave.dart';
 import 'package:amsystm/views/profile/edit_profile.dart';
@@ -77,13 +78,11 @@ class AppRouter {
                     user: state.extra as User,
                   ),
                 ),
-                // GoRoute(
-                //   path: 'updatePost',
-                //   name: 'updatePost',
-                //   builder: (context, state) => UpdatePostScreen(
-                //     model: state.extra as Post,
-                //   ),
-                // ),
+                GoRoute(
+                  path: 'edit-attendence',
+                  name: 'edit-attendence',
+                  builder: (context, state) => const EditAttendencePage(),
+                ),
                 // GoRoute(
                 //   path: 'editProfile',
                 //   name: 'editProfile',

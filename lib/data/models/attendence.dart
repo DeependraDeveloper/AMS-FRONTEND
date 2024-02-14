@@ -1,12 +1,15 @@
 import 'dart:convert';
 
+import 'package:amsystm/data/models/user.dart';
+
 class Attendence {
   final String? id;
-  final String? user;
+  final User? user;
   final String? status;
   final String? inTime;
   final String? outTime;
-  final int? duration;
+  final String? duration;
+  final bool? isUpdated;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
@@ -17,17 +20,19 @@ class Attendence {
     this.inTime,
     this.outTime,
     this.duration,
+    this.isUpdated,
     this.createdAt,
     this.updatedAt,
   });
 
   Attendence copyWith({
     String? id,
-    String? user,
+    User? user,
     String? status,
     String? inTime,
     String? outTime,
-    int? duration,
+    String? duration,
+    bool? isUpdated,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) =>
@@ -38,6 +43,7 @@ class Attendence {
         inTime: inTime ?? this.inTime,
         outTime: outTime ?? this.outTime,
         duration: duration ?? this.duration,
+        isUpdated: isUpdated ?? this.isUpdated,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
       );
@@ -49,11 +55,12 @@ class Attendence {
 
   factory Attendence.fromJson(Map<String, dynamic> json) => Attendence(
         id: json["_id"],
-        user: json["user"],
+        user: json["user"] == null ? null : User.fromJson(json["user"]),
         status: json["status"],
         inTime: json["inTime"],
         outTime: json["outTime"],
         duration: json["duration"],
+        isUpdated: json["isUpdated"],
         createdAt: json["createdAt"] == null
             ? null
             : DateTime.parse(json["createdAt"]),
@@ -64,11 +71,12 @@ class Attendence {
 
   Map<String, dynamic> toJson() => {
         "_id": id,
-        "user": user,
+        "user": user == null ? const User() : user!.toJson(),
         "status": status,
         "inTime": inTime,
         "outTime": outTime,
         "duration": duration,
+        "isUpdated": isUpdated,
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
       };

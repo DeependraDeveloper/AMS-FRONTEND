@@ -8,6 +8,8 @@ class UserState extends Equatable {
     this.attendences = const <Attendence>[], //particular user attendences
     this.users = const <User>[], // all users
     this.user = const User(), // particular user
+    this.allAttendences = const <AllAttendence>[], // particular user all attendences
+    this.dateRangeAttendences = const <Attendence>[], // particular user attendences in date range
     this.isLoading = false,
     this.error = '',
     this.message = '',
@@ -19,6 +21,8 @@ class UserState extends Equatable {
   final List<Attendence> attendences;
   final List<User> users;
   final User user;
+  final List<AllAttendence> allAttendences;
+  final List<Attendence> dateRangeAttendences;
   final bool isLoading;
   final String error;
   final String message;
@@ -30,6 +34,8 @@ class UserState extends Equatable {
     List<Attendence>? attendences,
     List<User>? users,
     User? user,
+    List<AllAttendence>? allAttendences,
+    List<Attendence>? dateRangeAttendences,
     bool? isLoading,
     String? error,
     String? message,
@@ -41,6 +47,8 @@ class UserState extends Equatable {
       attendences: attendences ?? this.attendences,
       users: users ?? this.users,
       user: user ?? this.user,
+      allAttendences: allAttendences ?? this.allAttendences,
+      dateRangeAttendences: dateRangeAttendences ?? this.dateRangeAttendences,
       isLoading: isLoading ?? this.isLoading,
       error: error ?? this.error,
       message: message ?? this.message,
@@ -55,6 +63,8 @@ class UserState extends Equatable {
         attendences,
         users,
         user,
+        allAttendences,
+        dateRangeAttendences,
         isLoading,
         error,
         message

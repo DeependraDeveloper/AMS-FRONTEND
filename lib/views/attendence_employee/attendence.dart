@@ -20,6 +20,19 @@ class AttedencePage extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
+        actions: role == 'employee'
+            ? null
+            : [
+                IconButton(
+                  onPressed: () {
+                    context.pushNamed('edit-attendence');
+                  },
+                  icon: const Icon(
+                    Icons.model_training_rounded,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
       ),
       floatingActionButton: role == 'employee'
           ? null
@@ -27,6 +40,7 @@ class AttedencePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 FloatingActionButton(
+                  heroTag: 'add-employee',
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
@@ -42,13 +56,16 @@ class AttedencePage extends StatelessWidget {
                 ),
                 const SizedBox(width: 10),
                 FloatingActionButton(
+                  heroTag: 'download-attendence present month',
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
                   backgroundColor: Colors.blue,
                   onPressed: () {
                     context.read<UserBloc>().add(
-                          DownloadAttendanceEvent(id: id),
+                          DownloadAttendanceEvent(
+                            id: id,
+                          ),
                         );
                   },
                   child: const Icon(
@@ -59,11 +76,8 @@ class AttedencePage extends StatelessWidget {
                 ),
               ],
             ),
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        color: Colors.white,
+      body: Padding(
+        padding: const EdgeInsets.only(left: 20, right: 20, top: 15),
         child: Column(
           children: [
             role == 'employee'
@@ -78,12 +92,12 @@ class AttedencePage extends StatelessWidget {
                         );
                       }
                       if (state.message.isNotEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(state.message),
-                            backgroundColor: Colors.green,
-                          ),
-                        );
+                        // ScaffoldMessenger.of(context).showSnackBar(
+                        //   SnackBar(
+                        //     content: Text(state.message),
+                        //     backgroundColor: Colors.green,
+                        //   ),
+                        // );
                       }
                     },
                     builder: (context, state) {
@@ -209,12 +223,12 @@ class AttedencePage extends StatelessWidget {
                         );
                       }
                       if (state.message.isNotEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(state.message),
-                            backgroundColor: Colors.green,
-                          ),
-                        );
+                        // ScaffoldMessenger.of(context).showSnackBar(
+                        //   SnackBar(
+                        //     content: Text(state.message),
+                        //     backgroundColor: Colors.green,
+                        //   ),
+                        // );
                       }
                     },
                     builder: (context, state) {

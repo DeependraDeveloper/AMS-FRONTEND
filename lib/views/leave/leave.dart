@@ -47,20 +47,17 @@ class LeavePage extends StatelessWidget {
                 ),
               );
             } else if (state.message.isNotEmpty) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
-                  backgroundColor: Colors.green,
-                ),
-              );
+              // ScaffoldMessenger.of(context).showSnackBar(
+              //   SnackBar(
+              //     content: Text(state.message),
+              //     backgroundColor: Colors.green,
+              //   ),
+              // );
             }
           },
           builder: (BuildContext context, state) {
-            return Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              color: Colors.white,
+            return Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 15),
               child: state.leaves.isEmpty
                   ? Center(
                       child: Text(

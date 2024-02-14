@@ -35,8 +35,7 @@ abstract class UserRepository {
   // getAttendence
   Future<JsonResponse> getAttendence({
     required String id,
-  }); 
-
+  });
 
   // addLeaveRequest
   Future<JsonResponse> addLeaveRequest({
@@ -53,7 +52,6 @@ abstract class UserRepository {
     required String id,
   });
 
-
   // addEmployee
   Future<JsonResponse> addEmployee({
     required String id,
@@ -65,18 +63,15 @@ abstract class UserRepository {
     required String designation,
   });
 
-
   // getAllAttendences
   Future<JsonResponse> getAllAttendences({
     required String id,
   });
 
-
   // getAllUsers
   Future<JsonResponse> getAllUsers({
     required String organization,
   });
-
 
   // updateUser
 
@@ -85,12 +80,10 @@ abstract class UserRepository {
     required String name,
     required String email,
     required String phone,
-    
     required String department,
     required String designation,
     required String organization,
   });
-
 
   // get user
   Future<JsonResponse> getUser({
@@ -103,10 +96,43 @@ abstract class UserRepository {
     required String leaveId,
   });
 
-
   // downloadAttendence
   Future<JsonResponse> downloadAttendence({
     required String id,
+  });
+
+  // getAttendencesOfParticularUser
+  Future<JsonResponse> getAttendencesOfParticularUser({
+    required String id,
+  });
+
+  // updateAttendence
+
+  Future<JsonResponse> updateAttendence({
+    required String id,
+    required String inTime,
+    required String outTime,
+    required String status,
+  });
+
+  // downloadAttendenceMonthy
+  Future<JsonResponse> downloadAttendenceMonthy(
+      {required String id, required int month, required int year});
+
+  // getAttendenceWithDateRange
+  Future<JsonResponse> getAttendenceWithDateRange({
+    required String id,
+    required String startDate,
+    required String endDate,
+  });
+
+  // updateAttendences
+
+  Future<JsonResponse> updateAttendences({
+    required List<String> ids,
+    required String inTime,
+    required String outTime,
+    required String status,
   });
 }
 
@@ -175,7 +201,6 @@ class UserRepositoryImpl implements UserRepository {
     );
   }
 
-
   // getAttendence
   @override
   Future<JsonResponse> getAttendence({
@@ -204,7 +229,6 @@ class UserRepositoryImpl implements UserRepository {
     );
   }
 
-
   // getLeaves
   @override
   Future<JsonResponse> getLeaveRequests({
@@ -215,8 +239,7 @@ class UserRepositoryImpl implements UserRepository {
     );
   }
 
-
-   // addEmployee
+  // addEmployee
   @override
   Future<JsonResponse> addEmployee({
     required String id,
@@ -238,7 +261,6 @@ class UserRepositoryImpl implements UserRepository {
     );
   }
 
-
   // getAllAttendences
   @override
   Future<JsonResponse> getAllAttendences({
@@ -248,7 +270,6 @@ class UserRepositoryImpl implements UserRepository {
       id: id,
     );
   }
-
 
   // getAllUsers
   @override
@@ -260,7 +281,6 @@ class UserRepositoryImpl implements UserRepository {
     );
   }
 
-
   // updateUser
   @override
   Future<JsonResponse> updateUser({
@@ -268,7 +288,6 @@ class UserRepositoryImpl implements UserRepository {
     required String name,
     required String email,
     required String phone,
-  
     required String department,
     required String designation,
     required String organization,
@@ -278,17 +297,14 @@ class UserRepositoryImpl implements UserRepository {
       name: name,
       email: email,
       phone: phone,
-    
       department: department,
       designation: designation,
       organization: organization,
     );
   }
 
-
   // get user
   @override
-
   Future<JsonResponse> getUser({
     required String id,
   }) {
@@ -316,6 +332,70 @@ class UserRepositoryImpl implements UserRepository {
   }) {
     return userService.downloadAttendence(
       id: id,
+    );
+  }
+
+  // getAttendencesOfParticularUser
+  @override
+  Future<JsonResponse> getAttendencesOfParticularUser({
+    required String id,
+  }) {
+    return userService.getAttendencesOfParticularUser(
+      id: id,
+    );
+  }
+
+  // updateAttendence
+  @override
+  Future<JsonResponse> updateAttendence({
+    required String id,
+    required String inTime,
+    required String outTime,
+    required String status,
+  }) {
+    return userService.updateAttendence(
+      id: id,
+      inTime: inTime,
+      outTime: outTime,
+      status: status,
+    );
+  }
+
+  // downloadAttendenceMonthy
+  @override
+  Future<JsonResponse> downloadAttendenceMonthy(
+      {required String id, required int month, required int year}) {
+    return userService.downloadAttendenceMonthy(
+        id: id, month: month, year: year);
+  }
+
+  // getAttendenceWithDateRange
+  @override
+  Future<JsonResponse> getAttendenceWithDateRange({
+    required String id,
+    required String startDate,
+    required String endDate,
+  }) {
+    return userService.getAttendenceWithDateRange(
+      id: id,
+      startDate: startDate,
+      endDate: endDate,
+    );
+  }
+
+
+  @override
+   Future<JsonResponse> updateAttendences({
+    required List<String> ids,
+    required String inTime,
+    required String outTime,
+    required String status,
+  }) {
+    return userService.updateAttendences(
+      ids: ids,
+      inTime: inTime,
+      outTime: outTime,
+      status: status,
     );
   }
 }

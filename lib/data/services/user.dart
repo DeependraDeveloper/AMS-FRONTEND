@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:amsystm/data/models/all_attendence.dart';
 import 'package:amsystm/data/models/attendence.dart';
 import 'package:amsystm/data/models/json_reposne.dart';
 import 'package:amsystm/data/models/leave.dart';
@@ -575,6 +576,222 @@ class UserService {
 
         return JsonResponse.success(
           message: 'Attendence Csv Downloaded Successfully!',
+        );
+      } else {
+        final error = response.data?["message"]?.toString();
+        return JsonResponse.failure(
+          statusCode: response.statusCode ?? 500,
+          message: error ?? 'Something went wrong!',
+        );
+      }
+    } on DioException catch (e) {
+      final error = e.response?.data?["message"]?.toString();
+      return JsonResponse.failure(
+        message: error.toString(),
+        statusCode: e.response?.statusCode ?? 500,
+      );
+    } on Exception catch (_) {
+      return JsonResponse.failure(
+        message: 'Something went wrong!',
+      );
+    }
+  }
+
+  // getAttendencesOfParticularUser
+
+  Future<JsonResponse> getAttendencesOfParticularUser({
+    required String id,
+  }) async {
+    try {
+      final Response response = await dio.get(
+        '/attendence-by-month-year/$id',
+      );
+
+      if (response.statusCode == 200) {
+        final data = List.from(response.data)
+            .map((e) => AllAttendence.fromJson(e))
+            .toList();
+        return JsonResponse.success(
+          message: 'All Attendences Fetched Successfully!',
+          data: data,
+        );
+      } else {
+        final error = response.data?["message"]?.toString();
+        return JsonResponse.failure(
+          statusCode: response.statusCode ?? 500,
+          message: error ?? 'Something went wrong!',
+        );
+      }
+    } on DioException catch (e) {
+      final error = e.response?.data?["message"]?.toString();
+      return JsonResponse.failure(
+        message: error.toString(),
+        statusCode: e.response?.statusCode ?? 500,
+      );
+    } on Exception catch (_) {
+      return JsonResponse.failure(
+        message: 'Something went wrong!',
+      );
+    }
+  }
+
+  // updateAttendence
+
+  Future<JsonResponse> updateAttendence({
+    required String id,
+    required String inTime,
+    required String outTime,
+    required String status,
+  }) async {
+    try {
+      final Response response = await dio.post(
+        '/update-attendence',
+        data: {
+          'id': id,
+          'inTime': inTime,
+          'outTime': outTime,
+          'status': status,
+        },
+      );
+      if (response.statusCode == 200) {
+        return JsonResponse.success(
+          message: response.data?["message"]?.toString() ?? 'Success!',
+        );
+      } else {
+        final error = response.data?["message"]?.toString();
+        return JsonResponse.failure(
+          statusCode: response.statusCode ?? 500,
+          message: error ?? 'Something went wrong!',
+        );
+      }
+    } on DioException catch (e) {
+      final error = e.response?.data?["message"]?.toString();
+      return JsonResponse.failure(
+        message: error.toString(),
+        statusCode: e.response?.statusCode ?? 500,
+      );
+    } on Exception catch (_) {
+      return JsonResponse.failure(
+        message: 'Something went wrong!',
+      );
+    }
+  }
+
+  // downloadAttendenceMonthy
+  Future<JsonResponse> downloadAttendenceMonthy({
+    required String id,
+    required int month,
+    required int year,
+  }) async {
+    try {
+      final Response response = await dio.post(
+        '/attendence-csv-month-wise',
+        data: {
+          'id': id,
+          'month': month,
+          'year': year,
+        },
+        options: Options(responseType: ResponseType.bytes),
+      );
+      if (response.statusCode == 200) {
+        var path = await ExternalPath.getExternalStoragePublicDirectory(
+            ExternalPath.DIRECTORY_DOCUMENTS);
+
+        final String filePath = '$path/attendence.csv';
+
+        final File file = File(filePath);
+
+        await file.writeAsBytes(response.data as dynamic, flush: true);
+
+        return JsonResponse.success(
+          message: 'Attendence Csv Monthly Downloaded Successfully!',
+        );
+      } else {
+        final error = response.data?["message"]?.toString();
+        return JsonResponse.failure(
+          statusCode: response.statusCode ?? 500,
+          message: error ?? 'Something went wrong!',
+        );
+      }
+    } on DioException catch (e) {
+      final error = e.response?.data?["message"]?.toString();
+      return JsonResponse.failure(
+        message: error.toString(),
+        statusCode: e.response?.statusCode ?? 500,
+      );
+    } on Exception catch (_) {
+      return JsonResponse.failure(
+        message: 'Something went wrong!',
+      );
+    }
+  }
+
+  // getAttendenceWithDateRange
+  Future<JsonResponse> getAttendenceWithDateRange({
+    required String id,
+    required String startDate,
+    required String endDate,
+  }) async {
+    try {
+      final Response response = await dio.post(
+        '/attendence-by-date-range',
+        data: {
+          'id': id,
+          'startDate': startDate,
+          'endDate': endDate,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = List.from(response.data)
+            .map((e) => Attendence.fromJson(e))
+            .toList();
+        return JsonResponse.success(
+          message: 'Attendences Fetched Successfully For Date Range!',
+          data: data,
+        );
+      } else {
+        final error = response.data?["message"]?.toString();
+        return JsonResponse.failure(
+          statusCode: response.statusCode ?? 500,
+          message: error ?? 'Something went wrong!',
+        );
+      }
+    } on DioException catch (e) {
+      final error = e.response?.data?["message"]?.toString();
+      return JsonResponse.failure(
+        message: error.toString(),
+        statusCode: e.response?.statusCode ?? 500,
+      );
+    } on Exception catch (_) {
+      return JsonResponse.failure(
+        message: 'Something went wrong!',
+      );
+    }
+  }
+
+
+   // updateAttendences
+
+  Future<JsonResponse> updateAttendences({
+    required List<String> ids,
+    required String inTime,
+    required String outTime,
+    required String status,
+  }) async {
+    try {
+      final Response response = await dio.post(
+        '/update-attendences',
+        data: {
+          'ids': ids,
+          'inTime': inTime,
+          'outTime': outTime,
+          'status': status,
+        },
+      );
+      if (response.statusCode == 200) {
+        return JsonResponse.success(
+          message: response.data?["message"]?.toString() ?? 'Success!',
         );
       } else {
         final error = response.data?["message"]?.toString();

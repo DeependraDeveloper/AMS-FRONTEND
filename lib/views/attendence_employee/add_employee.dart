@@ -57,24 +57,21 @@ class _AddEmployeeState extends State<AddEmployee> {
                 ),
               );
             } else if (state.message.isNotEmpty == true) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    state.message,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Colors.green,
-                        ),
-                  ),
-                ),
-              );
+              // ScaffoldMessenger.of(context).showSnackBar(
+              //   SnackBar(
+              //     content: Text(
+              //       state.message,
+              //       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              //             color: Colors.green,
+              //           ),
+              //     ),
+              //   ),
+              // );
             }
           },
           builder: (context, state) {
-            return Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              color: Colors.white,
+            return Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 15),
               child: Form(
                 key: _formKey,
                 child: SingleChildScrollView(
