@@ -1,32 +1,36 @@
 part of 'connectivity_bloc.dart';
 
-enum ConnectivityStatus { connected, disconnected }
+enum ConnectivityStatus {
+  connected,
+  disconnected,
+}
 
 class ConnectivityState extends Equatable {
   const ConnectivityState({
     this.status = ConnectivityStatus.connected,
-    this.connectivityType = ConnectivityResult.other,
+    this.connectivityTypes = const <ConnectivityResult>[],
     this.busy = false,
     this.error = '',
     this.message = '',
   });
 
   final ConnectivityStatus status;
-  final ConnectivityResult connectivityType;
+  final List<ConnectivityResult> connectivityTypes;
   final bool busy;
   final String error;
   final String message;
 
+  /// copyWith method
   ConnectivityState copyWith({
     ConnectivityStatus? status,
-    ConnectivityResult? connectivityType,
+    List<ConnectivityResult>? connectivityTypes,
     bool? busy,
     String? error,
     String? message,
   }) {
     return ConnectivityState(
       status: status ?? this.status,
-      connectivityType: connectivityType ?? this.connectivityType,
+      connectivityTypes: connectivityTypes ?? this.connectivityTypes,
       busy: busy ?? this.busy,
       error: error ?? this.error,
       message: message ?? this.message,
@@ -34,5 +38,5 @@ class ConnectivityState extends Equatable {
   }
 
   @override
-  List<Object> get props => [status, connectivityType, busy, error, message];
+  List<Object> get props => [status, connectivityTypes, busy, error, message];
 }

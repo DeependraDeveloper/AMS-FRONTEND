@@ -43,20 +43,17 @@ class _ObserverPageState extends State<ObserverPage>
     return BlocBuilder<ConnectivityBloc, ConnectivityState>(
       buildWhen: (previous, current) =>
           previous.status.name != current.status.name ||
-          previous.connectivityType != current.connectivityType,
+          previous.connectivityTypes != current.connectivityTypes,
       builder: (context, state) {
-        final connectionType = state.connectivityType;
-        final status = state.status;
-        final connected = connectionType == ConnectivityResult.mobile ||
-            connectionType == ConnectivityResult.wifi ||
-            connectionType == ConnectivityResult.ethernet ||
-            connectionType == ConnectivityResult.vpn ||
-            connectionType == ConnectivityResult.other;
-
-        if (status == ConnectivityStatus.disconnected && !connected) {
+        final types = state.connectivityTypes;
+        final connected = types.contains(ConnectivityResult.mobile) ||
+            types.contains(ConnectivityResult.wifi) ||
+            types.contains(ConnectivityResult.ethernet) ||
+            types.contains(ConnectivityResult.vpn) ||
+            types.contains(ConnectivityResult.other);
+        if (!connected && state.status == ConnectivityStatus.disconnected) {
           return const NoInternetPage();
         }
-
         return widget.child;
       },
     );

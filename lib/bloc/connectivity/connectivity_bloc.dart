@@ -79,7 +79,9 @@ class ConnectivityBloc extends Bloc<ConnectivityEvent, ConnectivityState> {
   ) async {
     try {
       final index = Random().nextInt(3);
+      // print('\x1B[32mChecking: ${ips[index]}\x1B[0m');
       final response = await dio.get(ips[index]);
+      // print('\x1B[32mResponse: ${response.statusCode}\x1B[0m');
       if (response.statusCode == 200) {
         emit(
           state.copyWith(
