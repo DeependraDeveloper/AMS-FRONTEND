@@ -13,7 +13,7 @@ import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:latlong2/latlong.dart';
 
 class Clock extends StatefulWidget {
-  const Clock({Key? key}) : super(key: key);
+  const Clock({super.key});
 
   @override
   State<Clock> createState() => _ClockState();

@@ -119,7 +119,7 @@ class _MainPageState extends State<MainPage> {
                         : Colors.black,
                     size: 34,
                   ))
-              .toList(),
+              ,
         ],
         onTap: (index) {
           setState(() {
