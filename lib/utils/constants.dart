@@ -5,3 +5,4 @@ const apiVersion = 'api/v1';
 const user = 'user';
 
 const httpBaseUrl = '$httpSchema://$httpHost:$httpPort/$apiVersion/$user';
+const kPassword = 'password';

@@ -12,28 +12,29 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
-  firebase_core: ^2.25.0
+  firebase_core: ^3.10.0
   flutter_native_splash: ^2.3.10
   equatable: ^2.0.5
   dio: ^5.4.0
-  hydrated_bloc: ^9.1.3
-  firebase_messaging: ^14.7.11
+  hydrated_bloc: ^10.0.0
+  firebase_messaging: ^15.2.0
   path_provider: ^2.1.2
-  connectivity_plus: ^5.0.2
+  connectivity_plus: ^6.1.2
   flutter_localizations:
     sdk: flutter
-  flutter_bloc: ^8.1.3
-  go_router: ^13.1.0
-  intl: ^0.18.1
+  flutter_bloc: ^9.0.0
+  go_router: ^14.6.3
+  intl: ^0.19.0
   flutter_svg: ^2.0.9
-  flutter_launcher_icons: ^0.13.1
-  external_path: ^1.0.3
+  flutter_launcher_icons: ^0.14.3
+  external_path: ^2.0.1
   url_launcher: ^6.2.4
   curved_navigation_bar: ^1.0.3
-  geolocator: ^10.1.1
-  flutter_map_location_marker: ^8.0.4
+  geolocator: ^13.0.2
+  flutter_map_location_marker: ^9.1.1
   latlong2: ^0.9.0
-  flutter_map: ^6.1.0
+  flutter_map: ^7.0.2
+  crypto: ^3.0.6
 
 
 flutter_native_splash:
@@ -47,7 +48,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^2.0.0
+  flutter_lints: ^5.0.0
 
 
 flutter:

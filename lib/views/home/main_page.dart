@@ -1,5 +1,5 @@
 import 'package:amsystm/views/attendence_employee/attendence.dart';
-import 'package:amsystm/views/home/clock.dart';
+// import 'package:amsystm/views/home/clock.dart';
 import 'package:amsystm/views/home/home_page.dart';
 import 'package:amsystm/views/leave/leave.dart';
 import 'package:amsystm/views/profile/profile.dart';

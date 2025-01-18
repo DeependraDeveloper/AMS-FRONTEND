@@ -1,6 +1,7 @@
 // ignore_for_file: unused_local_variable
 
 import 'dart:async';
+import 'package:crypto/crypto.dart';
 import 'package:amsystm/bloc_observer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -10,7 +11,6 @@ import 'package:flutter/services.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:amsystm/firebase_options.dart';
-// import 'package:surplus/utils/bloc_observer.dart';
 
 Future<void> startApplication(FutureOr<Widget> Function() builder) async {
   try {
@@ -22,11 +22,18 @@ Future<void> startApplication(FutureOr<Widget> Function() builder) async {
       DeviceOrientation.portraitUp,
     ]);
 
+    /// [key] is used to encrypt the data of the application.
+   // final key = sha256.convert(utf8.encode(kPassword)).bytes;
+
+    /// [encryptionCipher] is used to encrypt the data of the application.
+   // final encryptionCipher = HydratedAesCipher(key);
+
     // Hydrated storage for storing the data in the local storage
     HydratedBloc.storage = await HydratedStorage.build(
       storageDirectory: kIsWeb
-          ? HydratedStorage.webStorageDirectory
-          : await getTemporaryDirectory(),
+          ? HydratedStorageDirectory.web
+          : HydratedStorageDirectory((await getTemporaryDirectory()).path),
+    //  encryptionCipher: encryptionCipher,
     );
 
     /// user bloc observer to observe the state changes in the blocs
